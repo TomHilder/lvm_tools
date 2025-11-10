@@ -16,6 +16,7 @@ from lvm_tools.config.validation import (
     validate_scale,
 )
 from lvm_tools.data.tile import LVMTileLike
+from lvm_tools.fit_data.clipping import Range, Ranges
 from lvm_tools.fit_data.filtering import (
     BAD_FLUX_THRESHOLD,
     ExcludeStrategy,
@@ -31,12 +32,12 @@ class DataConfig:
     Configuration object for data processing before fitting.
 
     args:
-        λ_range: tuple[float, float] - Wavelength range to include.
-        α_range: tuple[float, float] - Right Ascension range to include.
-        δ_range: tuple[float, float] - Declination range to include.
+        λ_range: Range | Ranges - Wavelength range to include.
+        α_range: Range - Right Ascension range to include.
+        δ_range: Range - Declination range to include.
         nans_strategy: ExcludeStrategy - Strategy for handling NaN values.
         F_bad_strategy: ExcludeStrategy - Strategy for handling bad flux values. For "pixel", the flux range is applied to each pixel. For "spaxel", the flux range is applied to the median of all pixels in a spaxel.
-        F_range: tuple[float, float] - Flux range to include.
+        F_range: Range - Flux range to include.
         fibre_status_include: tuple[FibreStatus] - Fibre status values to include.
         apply_mask: bool - Whether to apply a mask to the data.
         normalise_F_strategy: NormaliseStrategy - Strategy for normalising flux data.
@@ -48,13 +49,13 @@ class DataConfig:
     """
 
     # Data clipping ranges (aka choose data of interest)
-    λ_range: tuple[float, float] = (-np.inf, np.inf)
-    α_range: tuple[float, float] = (-np.inf, np.inf)
-    δ_range: tuple[float, float] = (-np.inf, np.inf)
+    λ_range: Range | Ranges = (-np.inf, np.inf)
+    α_range: Range = (-np.inf, np.inf)
+    δ_range: Range = (-np.inf, np.inf)
     # Bad data ranges and strategies (aka exclude bad data)
     nans_strategy: ExcludeStrategy = "pixel"
     F_bad_strategy: ExcludeStrategy = "spaxel"
-    F_range: tuple[float, float] = (BAD_FLUX_THRESHOLD, np.inf)
+    F_range: Range = (BAD_FLUX_THRESHOLD, np.inf)
     # Handling of flagged data
     fibre_status_include: tuple[FibreStatus] = (0,)
     apply_mask: bool = True
@@ -69,9 +70,9 @@ class DataConfig:
     normalise_δ_scale: float = 1.0
 
     def __post_init__(self) -> None:
-        validate_range(self.λ_range)
-        validate_range(self.α_range)
-        validate_range(self.δ_range)
+        # validate_range(self.λ_range) # NOTE: moved to clipping.py
+        # validate_range(self.α_range)
+        # validate_range(self.δ_range)
         validate_excl_strategy(self.nans_strategy)
         validate_excl_strategy(self.F_bad_strategy)
         validate_range(self.F_range)
@@ -94,7 +95,7 @@ class DataConfig:
     @staticmethod
     def from_tiles(
         tiles: LVMTileLike,
-        λ_range: tuple[float, float] = (-np.inf, np.inf),
+        λ_range: Range | Ranges = (-np.inf, np.inf),
         **overrides,
     ) -> DataConfig:
         # λ_range cannot be set automatically
