@@ -4,7 +4,7 @@ dynamic = ["version"]
 description = "Lazily read/encapsulate LVM DRP data in a modular way"
 readme = "README.md"
 authors = [{ name = "Tom Hilder", email = "Thomas.Hilder@monash.edu" }]
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
     "astropy>=7.1.0",
     "dask>=2025.7.0",
