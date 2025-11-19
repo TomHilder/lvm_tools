@@ -36,8 +36,8 @@ def ensure_ranges(ranges: Range | Ranges) -> Ranges:
 
 def verify_range(r: Range) -> None:
     # Error if not a tuple
-    if not isinstance(r, tuple):
-        raise TypeError("Range must be a tuple.")
+    # if not isinstance(r, tuple):
+    # raise TypeError("Range must be a tuple.")
     # Error if entries are not strictly floats
     if not all(isinstance(x, (float, np.floating)) for x in r):
         raise TypeError("Range entries must be floats.")
