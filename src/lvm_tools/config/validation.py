@@ -10,8 +10,8 @@ from lvm_tools.fit_data.normalisation import NormaliseStrategy
 
 
 def validate_range(x_range: Range) -> None:
-    if not isinstance(x_range, tuple):
-        raise TypeError("Data range must be in a tuple.")
+    # if not isinstance(x_range, tuple):
+    # raise TypeError("Data range must be in a tuple.")
     if len(x_range) != 2:
         raise ValueError("Data range must be a tuple with exactly two values (min, max).")
     if x_range[1] < x_range[0]:
