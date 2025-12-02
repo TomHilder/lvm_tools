@@ -102,7 +102,14 @@ class FitData:
 
     @property
     def αδ_data(self) -> SpatialDataLVM:
-        return SpatialDataLVM(self.α, self.δ, self.spaxel_idx, self.tile_idx, self.ifu_idx)
+        return SpatialDataLVM(
+            x=self.α,
+            y=self.δ,
+            idx=self.spaxel_idx,
+            tile_idx=self.tile_idx,
+            ifu_idx=self.ifu_idx,
+            fib_idx=self.fibre_idx,
+        )
 
     @property
     def λ(self) -> JaxArray:
@@ -142,6 +149,12 @@ class FitData:
     def ifu_idx(self) -> JaxArray:
         ifu = self.processed_data["ifu_label"].values
         return to_jax_array(np.unique(ifu, return_inverse=True)[1], dtype=np.int64)
+
+    @property
+    def fibre_idx(self) -> JaxArray:
+        fib = self.processed_data["fibre_id"].values
+        # CANNOT do unique trick because we need to preserve "gaps"
+        return to_jax_array(fib, dtype=np.int64)
 
     @property
     def v_bary(self) -> JaxArray:
