@@ -1,5 +1,7 @@
 """clipping.py - data clipping for data preparation."""
 
+import warnings
+
 import numpy as np
 from xarray import DataArray, Dataset, concat
 
@@ -36,11 +38,17 @@ def ensure_ranges(ranges: Range | Ranges) -> Ranges:
 
 def verify_range(r: Range) -> None:
     # Error if not a tuple
-    # if not isinstance(r, tuple):
-    # raise TypeError("Range must be a tuple.")
+    if not isinstance(r, (tuple, list)):
+        raise TypeError("Range must be a tuple.")
     # Error if entries are not strictly floats
     if not all(isinstance(x, (float, np.floating)) for x in r):
-        raise TypeError("Range entries must be floats.")
+        if any(isinstance(x, int) for x in r):
+            warnings.warn(
+                "Range entries should be floats, but integers were provided. Implicit conversion will be applied.",
+                UserWarning,
+            )
+        else:
+            raise TypeError("Range entries must be floats.")
     if r[0] >= r[1]:
         raise ValueError(f"Invalid range: {r}")
 
