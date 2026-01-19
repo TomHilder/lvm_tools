@@ -9,7 +9,7 @@ from xarray import DataArray, Dataset
 BAD_FLUX_THRESHOLD = -0.1e-13
 
 
-ExcludeStrategy = Literal[None, "pixel", "spaxel"]
+ExcludeStrategy = Literal[None, "pixel", "spaxel", "spaxel_max"]
 FibreStatus = Literal[0, 1, 2, 3]  # I have no idea what these mean, but they're in the data
 
 
@@ -26,6 +26,13 @@ def get_where_bad_median(arr: DataArray, bad_range: tuple[float, float]) -> Data
     where_bad_median_u = arr.median(dim="wavelength") > bad_range[1]
     all_nan = arr.isnull().all(dim="wavelength")
     return where_bad_median_l | where_bad_median_u | all_nan
+
+
+def get_where_bad_max(arr: DataArray, bad_range: tuple[float, float]) -> DataArray:
+    where_bad_max_l = arr.max(dim="wavelength") < bad_range[0]
+    where_bad_max_u = arr.max(dim="wavelength") > bad_range[1]
+    all_nan = arr.isnull().all(dim="wavelength")
+    return where_bad_max_l | where_bad_max_u | all_nan
 
 
 def get_where_badfib(fib_stat_arr: DataArray, fibre_status_incl: tuple[FibreStatus]) -> DataArray:
@@ -66,6 +73,8 @@ def filter_dataset(
         where_bad.append(get_where_bad(data["flux"], F_bad_range))
     elif F_bad_strategy == "spaxel":
         where_bad.append(get_where_bad_median(data["flux"], F_bad_range))
+    elif F_bad_strategy == "spaxel_max":
+        where_bad.append(get_where_bad_max(data["flux"], F_bad_range))
     else:
         raise ValueError(f"Unknown bad flux strategy: {F_bad_strategy}")
 
