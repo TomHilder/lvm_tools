@@ -56,10 +56,11 @@ def verify_range(r: Range) -> None:
 def verify_ranges(ranges: Ranges) -> None:
     # We check not only that each range is ordered, but also that they are ordered overall
     # and non-overlapping
+    # Need to make sure (-inf, inf) is allowed as a single range
     previous_upper = -np.inf
     for r in ranges:
         verify_range(r)
-        if r[0] <= previous_upper:
+        if r[0] <= previous_upper and previous_upper != -np.inf:
             raise ValueError(f"Overlapping or unordered ranges: {ranges}")
         previous_upper = r[1]
     # Error if not a tuple of tuples
