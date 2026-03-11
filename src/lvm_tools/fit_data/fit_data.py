@@ -167,6 +167,15 @@ class FitData:
             )
         )
 
+    def arcsec_to_model_domain(self, arcsec: float) -> float:
+        """Convert a length scale in arcseconds to the normalised model domain."""
+        deg = arcsec / 3600
+        probe = 1.0
+        return float(
+            to_π_domain(self.normalise_α(probe + deg))
+            - to_π_domain(self.normalise_α(probe))
+        )
+
     def __repr__(self):
         # TODO: add something here
         raise NotImplementedError
