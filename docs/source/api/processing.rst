@@ -169,7 +169,7 @@ Normalisation Functions
    - ``"1σ"``: Returns (mean(data), 2 * std(data))
    - ``"2σ"``: Returns (mean(data), 4 * std(data))
    - ``"3σ"``: Returns (mean(data), 6 * std(data))
-   - ``"padded"``: Returns (min - 0.01*range, 1.02*range)
+   - ``"padded"``: Returns (min - 0.15*range, 1.3*range)
 
 .. py:function:: lvm_tools.fit_data.normalisation.normalise(data, offset, scale)
 
@@ -262,6 +262,6 @@ Constants
 
 .. py:data:: lvm_tools.fit_data.normalisation.NORM_PADDING
    :type: float
-   :value: 0.01
+   :value: 0.15
 
    Padding fraction for "padded" normalisation strategy.
