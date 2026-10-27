@@ -42,7 +42,7 @@ TODO
 
 - [x] Extend wavelength range support in `DataConfig` to support multiple segments in λ
   - The point of this is to be able to fit two lines at very diffferent λ at once without reading _all_ the data between the lines
-- [ ] The `DataConfig.from_tiles` is too slow, which I think is because the data does get all read in for `calc_normalisation`. Most of the time reading this in, the normalisation has been chosen in practice, so we should skip this step in that case right?
+- [x] The `DataConfig.from_tiles` is too slow. Cause: the cubes were read in full when the tiles were opened (one dask chunk per cube, and `da.from_array` reading the whole array), not `calc_normalisation`. Now only the selected wavelength chunks are read. Skipping the normalisation when it's already chosen could still save a little.
 - [x] Relax version requirements from being strictly my environment (which is very up-to-date)
 - [ ] repr for FitData
 - [ ] Logging/hashing

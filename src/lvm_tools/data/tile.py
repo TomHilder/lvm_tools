@@ -27,8 +27,10 @@ FLUX_UNIT: Unit = u.erg * u.cm**-2 * u.s**-1 * u.angstrom**-1
 SPECTRAL_UNIT: Unit = u.angstrom
 SPATIAL_UNIT: Unit = u.degree
 
-# Default chunk size for Dask arrays
-CHUNKSIZE: str = "auto"
+# Dask chunks for the (fibre, wavelength) cubes: all fibres, 512 pixels in wavelength.
+# Chunking along wavelength means selecting a wavelength window only reads those
+# chunks; with "auto" a whole cube (~100 MB) is a single chunk.
+CHUNKSIZE: tuple[int, int] = (-1, 512)
 
 
 def get_science_inds(slitmap: FITS_rec) -> NDArray:
