@@ -40,16 +40,16 @@ def validate_offset(offset: float) -> None:
     if not isinstance(offset, (float, np.floating)):
         raise TypeError("offset must be float.")
     if not np.isfinite(offset):
-        raise Exception("Bad offset (nan or infty).")
+        raise ValueError("Bad offset (nan or infty).")
 
 
 def validate_scale(scale: float) -> None:
     if not isinstance(scale, (float, np.floating)):
         raise TypeError("scale must be float.")
     if not np.isfinite(scale):
-        raise Exception("Bad scale (nan or infty).")
+        raise ValueError("Bad scale (nan or infty).")
     if scale <= 0:
-        raise Exception("Scale is not positive, but it must be.")
+        raise ValueError("Scale is not positive, but it must be.")
 
 
 def validate_apply_mask(apply_mask: bool) -> None:

@@ -9,7 +9,8 @@ from xarray import DataArray, Dataset
 BAD_FLUX_THRESHOLD = -0.1e-13
 
 
-ExcludeStrategy = Literal[None, "pixel", "spaxel", "spaxel_max"]
+# None stays inside the Literal: validation checks values against get_args(ExcludeStrategy)
+ExcludeStrategy = Literal[None, "pixel", "spaxel", "spaxel_max"]  # noqa: PYI061
 FibreStatus = Literal[0, 1, 2, 3]  # I have no idea what these mean, but they're in the data
 
 

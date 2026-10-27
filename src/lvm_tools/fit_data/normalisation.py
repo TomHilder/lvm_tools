@@ -1,7 +1,8 @@
 """normalisation.py - data normalisation for data preparation."""
 
+from collections.abc import Callable
 from functools import partial
-from typing import Callable, Literal
+from typing import Literal
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -9,7 +10,8 @@ from numpy.typing import ArrayLike
 NORM_PADDING = 0.15
 
 
-NormaliseStrategy = Literal[None, "max only", "98 only", "extrema", "1σ", "2σ", "3σ", "padded"]
+# None stays inside the Literal: validation checks values against get_args(NormaliseStrategy)
+NormaliseStrategy = Literal[None, "max only", "98 only", "extrema", "1σ", "2σ", "3σ", "padded"]  # noqa: PYI061
 
 
 def calc_normalisation(data: ArrayLike, strategy: NormaliseStrategy) -> tuple[float, float]:

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
 
 import astropy.units as u  # type: ignore[import]
 import dask.array as da
@@ -161,9 +161,9 @@ class LVMTileCollection:
     def __repr__(self) -> str:
         prefix = f"LVMTileCollection ({hex(id(self))}):"
         prefix += f"\n    Tiles:            {len(self.meta)}"
-        prefix += f"\n    Exposures:        {set(meta.exp_num for meta in self.meta.values())}"
-        prefix += f"\n    DRP versions:     {set(meta.drp_ver for meta in self.meta.values())}"
-        prefix += f"\n    Tile IDs:         {set(meta.tile_id for meta in self.meta.values())}"
+        prefix += f"\n    Exposures:        { {meta.exp_num for meta in self.meta.values()} }"
+        prefix += f"\n    DRP versions:     { {meta.drp_ver for meta in self.meta.values()} }"
+        prefix += f"\n    Tile IDs:         { {meta.tile_id for meta in self.meta.values()} }"
         return f"{prefix}\n{summarize_with_units(self.data)}"
 
 

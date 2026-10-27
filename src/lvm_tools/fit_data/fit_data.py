@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 import jax.numpy as jnp
 import numpy as np
@@ -19,7 +20,7 @@ if TYPE_CHECKING:
 
 try:
     from spectracles.model.data import SpatialDataLVM
-except Exception as e:
+except Exception as e:  # noqa: BLE001 (any failure importing spectracles, e.g. a broken jax-finufft build)
     _import_err = e
     msg = (
         "Could not import SpatialDataLVM from spectracles.model.data. "
@@ -172,8 +173,7 @@ class FitData:
         deg = arcsec / 3600
         probe = 1.0
         return float(
-            to_π_domain(self.normalise_α(probe + deg))
-            - to_π_domain(self.normalise_α(probe))
+            to_π_domain(self.normalise_α(probe + deg)) - to_π_domain(self.normalise_α(probe))
         )
 
     def __repr__(self):
