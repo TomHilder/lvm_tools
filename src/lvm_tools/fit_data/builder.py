@@ -41,11 +41,7 @@ class FitDataBuilder:
     def _metadict(self) -> dict:
         # Ensure meta is always a dict of LVMTileMeta
         if isinstance(self.tiles, LVMTile):
-            meta = {self.tiles.meta.exp_num: self.tiles.meta.copy()}
+            meta = {self.tiles.meta.exp_num: self.tiles.meta}
         else:
-            meta = self.tiles.meta.copy()
-
-        for key, value in meta.items():
-            meta[key] = asdict(value)
-
-        return meta
+            meta = self.tiles.meta
+        return {key: asdict(value) for key, value in meta.items()}

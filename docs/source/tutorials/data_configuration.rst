@@ -205,22 +205,22 @@ Several strategies are available for normalising flux:
 .. code-block:: python
 
    # No normalisation
-   config = DataConfig(normalise_F_strategy=None, ...)
+   config = DataConfig(normalise_F_strategy=None)
 
    # Divide by maximum (default)
-   config = DataConfig(normalise_F_strategy="max only", ...)
+   config = DataConfig(normalise_F_strategy="max only")
 
    # Divide by 98th percentile (robust to outliers)
-   config = DataConfig(normalise_F_strategy="98 only", ...)
+   config = DataConfig(normalise_F_strategy="98 only")
 
    # Shift to minimum, scale by range
-   config = DataConfig(normalise_F_strategy="extrema", ...)
+   config = DataConfig(normalise_F_strategy="extrema")
 
-   # Centre on mean, scale by 2σ
-   config = DataConfig(normalise_F_strategy="2σ", ...)
+   # Centre on mean, scale by the width of ±2σ (4 standard deviations)
+   config = DataConfig(normalise_F_strategy="2σ")
 
-   # Shift and scale with padding
-   config = DataConfig(normalise_F_strategy="padded", ...)
+   # Shift and scale to the data range, with 15% padding on each side
+   config = DataConfig(normalise_F_strategy="padded")
 
 Coordinate Normalisation
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -302,6 +302,8 @@ Complete Example
 .. code-block:: python
 
    from pathlib import Path
+
+   import numpy as np
    from lvm_tools import LVMTile, DataConfig
 
    # Load data

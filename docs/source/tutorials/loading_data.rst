@@ -220,9 +220,11 @@ The LSF is provided as sigma (converted from FWHM in the DRP):
    lsf_sigma = tile.data["lsf_sigma"]
    print(f"LSF shape: {lsf_sigma.shape}")
 
-   # Median LSF at a given wavelength
-   median_lsf = float(lsf_sigma.isel(wavelength=3000).median())
-   print(f"Median LSF sigma at λ=3000: {median_lsf:.2f} Å")
+   # Median LSF over fibres at one wavelength pixel
+   lsf_at_pixel = lsf_sigma.isel(wavelength=3000)
+   median_lsf = float(np.nanmedian(lsf_at_pixel.values))
+   λ_pixel = float(lsf_at_pixel["wavelength"])
+   print(f"Median LSF sigma at {λ_pixel:.1f} Å: {median_lsf:.2f} Å")
 
 Observation Time
 ----------------

@@ -88,8 +88,8 @@ DataConfig
       - ``"max only"``: Divide by maximum value
       - ``"98 only"``: Divide by 98th percentile
       - ``"extrema"``: Shift to minimum, scale by range
-      - ``"1σ"``, ``"2σ"``, ``"3σ"``: Centre on mean, scale by N standard deviations
-      - ``"padded"``: Shift and scale with 1% padding
+      - ``"1σ"``, ``"2σ"``, ``"3σ"``: Centre on the mean, scale by the full width of ±Nσ (2N standard deviations)
+      - ``"padded"``: Shift and scale to the data range, padded by 15% of the range on each side
 
    .. py:attribute:: normalise_F_offset
       :type: float

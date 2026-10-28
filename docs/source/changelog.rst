@@ -9,6 +9,18 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Unreleased
 ----------
 
+Fixed
+~~~~~
+
+- ``FitDataBuilder.hash()`` crashed when given a single ``LVMTile`` (it only
+  worked for collections). Hashes for collections are unchanged.
+- Clipping or filtering away all the data now raises a ``ValueError`` that
+  names the ranges, instead of an obscure ``TypeError`` from the
+  normalisation.
+- Documentation: code examples that failed on real data, stale descriptions
+  of the ``"padded"`` and ``"Nσ"`` normalisations, and dependency minimums
+  that didn't match the package.
+
 Changed
 ~~~~~~~
 

@@ -40,7 +40,16 @@ def process_tile_data(tiles: LVMTileLike, config: DataConfig) -> Dataset:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
         ds = clip_data(tiles.data, config)
-        return filter_tile_data(ds, config)
+        if 0 in ds["flux"].shape:
+            raise ValueError(
+                "No data left after clipping to "
+                f"λ_range={config.λ_range}, α_range={config.α_range}, δ_range={config.δ_range}. "
+                "Check that the ranges overlap the tiles."
+            )
+        ds = filter_tile_data(ds, config)
+        if 0 in ds["flux"].shape:
+            raise ValueError("No data left after filtering. Check the DataConfig filter settings.")
+        return ds
 
 
 def get_αδ_ranges(tiles: LVMTileLike) -> tuple[tuple[float, float], tuple[float, float]]:
