@@ -658,22 +658,22 @@
 <h3>Flux Normalisation<a class="headerlink" href="#flux-normalisation" title="Link to this heading">#</a></h3>
 <p>Several strategies are available for normalising flux:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># No normalisation</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="c1"># Divide by maximum (default)</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"max only"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"max only"</span><span class="p">)</span>
 
 <span class="c1"># Divide by 98th percentile (robust to outliers)</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"98 only"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"98 only"</span><span class="p">)</span>
 
 <span class="c1"># Shift to minimum, scale by range</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"extrema"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"extrema"</span><span class="p">)</span>
 
-<span class="c1"># Centre on mean, scale by 2σ</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"2σ"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="c1"># Centre on mean, scale by the width of ±2σ (4 standard deviations)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"2σ"</span><span class="p">)</span>
 
-<span class="c1"># Shift and scale with padding</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"padded"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="c1"># Shift and scale to the data range, with 15% padding on each side</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="p">(</span><span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"padded"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -746,6 +746,8 @@
 <section id="complete-example">
 <h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LVMTile</span><span class="p">,</span> <span class="n">DataConfig</span>
 
 <span class="c1"># Load data</span>

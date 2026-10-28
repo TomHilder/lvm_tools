@@ -655,9 +655,11 @@
 <span class="n">lsf_sigma</span> <span class="o">=</span> <span class="n">tile</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"lsf_sigma"</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LSF shape: </span><span class="si">{</span><span class="n">lsf_sigma</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="c1"># Median LSF at a given wavelength</span>
-<span class="n">median_lsf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lsf_sigma</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median LSF sigma at λ=3000: </span><span class="si">{</span><span class="n">median_lsf</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Å"</span><span class="p">)</span>
+<span class="c1"># Median LSF over fibres at one wavelength pixel</span>
+<span class="n">lsf_at_pixel</span> <span class="o">=</span> <span class="n">lsf_sigma</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
+<span class="n">median_lsf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">lsf_at_pixel</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="n">λ_pixel</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lsf_at_pixel</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median LSF sigma at </span><span class="si">{</span><span class="n">λ_pixel</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Å: </span><span class="si">{</span><span class="n">median_lsf</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Å"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

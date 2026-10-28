@@ -9,12 +9,29 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Unreleased
 ----------
 
+[0.1.3] - 2026-10-28
+--------------------
+
+Fixed
+~~~~~
+
+- ``FitDataBuilder.hash()`` crashed when given a single ``LVMTile`` (it only
+  worked for collections). Hashes for collections are unchanged.
+- Clipping or filtering away all the data now raises a ``ValueError`` that
+  names the ranges, instead of an obscure ``TypeError`` from the
+  normalisation.
+- Documentation: code examples that failed on real data, stale descriptions
+  of the ``"padded"`` and ``"Nσ"`` normalisations, and dependency minimums
+  that didn't match the package.
+
 Changed
 ~~~~~~~
 
 - Invalid normalisation offsets or scales (NaN, infinite, or a non-positive
   scale) raise ``ValueError`` instead of a bare ``Exception``. Code that caught
   ``Exception`` still catches them.
+- The ``spectracles`` extra now installs spectracles on Python 3.11 and later
+  (matching spectracles' own requirement), instead of only on 3.13 and later.
 - Development: ruff is in the dev dependency group, and CI runs
   ``ruff check`` and ``ruff format --check``.
 - Documentation moved from ReadTheDocs to GitHub Pages

@@ -576,6 +576,8 @@ to regions with data coverage, avoiding extrapolation in sparse regions.</p>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">lvm_tools.data.helper.</span></span><span class="sig-name descname"><span class="pre">daskify_native</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Convert an array to a Dask array with native byte order.</p>
+<p>The array (typically a FITS memmap) is read lazily: computing a slice reads
+and byte-swaps only the chunks it touches, not the whole array.</p>
 <p>Handles FITS files which may store data in non-native byte order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

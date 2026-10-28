@@ -8,12 +8,12 @@ Requirements
 
 **lvm_tools** requires Python 3.10 or later. The package has the following core dependencies:
 
-- `astropy <https://www.astropy.org>`_ (>=7.1.0): Astronomical data handling and FITS I/O
-- `dask <https://www.dask.org>`_ (>=2025.7.0): Lazy array operations
-- `jax <https://jax.readthedocs.io>`_ (>=0.5.3): Accelerated numerical computing
-- `numpy <https://numpy.org>`_ (>=2.3.2): Numerical array operations
-- `scipy <https://scipy.org>`_ (>=1.16.1): Scientific computing utilities
-- `xarray <https://xarray.pydata.org>`_ (>=2025.7.1): Labelled multi-dimensional arrays
+- `astropy <https://www.astropy.org>`_ (>=6.0.0): Astronomical data handling and FITS I/O
+- `dask <https://www.dask.org>`_ (>=2024.1.0): Lazy array operations
+- `jax <https://jax.readthedocs.io>`_ (>=0.4.31): Accelerated numerical computing
+- `numpy <https://numpy.org>`_ (>=2.0.0): Numerical array operations
+- `scipy <https://scipy.org>`_ (>=1.11.0): Scientific computing utilities
+- `xarray <https://xarray.pydata.org>`_ (>=2024.1.0): Labelled multi-dimensional arrays
 
 Installation from PyPI
 ----------------------
@@ -57,6 +57,9 @@ For use with the `spectracles <https://github.com/TomHilder/spectracles>`_ spect
 .. code-block:: bash
 
    pip install lvm-tools[spectracles]
+
+spectracles needs Python 3.11 or later, so on Python 3.10 the extra installs
+lvm_tools without it.
 
 This installs the ``spectracles`` package and enables the ``αδ_data`` property on ``FitData`` objects.
 

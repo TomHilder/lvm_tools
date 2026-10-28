@@ -470,12 +470,12 @@
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p><strong>lvm_tools</strong> requires Python 3.10 or later. The package has the following core dependencies:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.astropy.org">astropy</a> (&gt;=7.1.0): Astronomical data handling and FITS I/O</p></li>
-<li><p><a class="reference external" href="https://www.dask.org">dask</a> (&gt;=2025.7.0): Lazy array operations</p></li>
-<li><p><a class="reference external" href="https://jax.readthedocs.io">jax</a> (&gt;=0.5.3): Accelerated numerical computing</p></li>
-<li><p><a class="reference external" href="https://numpy.org">numpy</a> (&gt;=2.3.2): Numerical array operations</p></li>
-<li><p><a class="reference external" href="https://scipy.org">scipy</a> (&gt;=1.16.1): Scientific computing utilities</p></li>
-<li><p><a class="reference external" href="https://xarray.pydata.org">xarray</a> (&gt;=2025.7.1): Labelled multi-dimensional arrays</p></li>
+<li><p><a class="reference external" href="https://www.astropy.org">astropy</a> (&gt;=6.0.0): Astronomical data handling and FITS I/O</p></li>
+<li><p><a class="reference external" href="https://www.dask.org">dask</a> (&gt;=2024.1.0): Lazy array operations</p></li>
+<li><p><a class="reference external" href="https://jax.readthedocs.io">jax</a> (&gt;=0.4.31): Accelerated numerical computing</p></li>
+<li><p><a class="reference external" href="https://numpy.org">numpy</a> (&gt;=2.0.0): Numerical array operations</p></li>
+<li><p><a class="reference external" href="https://scipy.org">scipy</a> (&gt;=1.11.0): Scientific computing utilities</p></li>
+<li><p><a class="reference external" href="https://xarray.pydata.org">xarray</a> (&gt;=2024.1.0): Labelled multi-dimensional arrays</p></li>
 </ul>
 </section>
 <section id="installation-from-pypi">
@@ -510,6 +510,8 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>lvm-tools<span class="o">[</span>spectracles<span class="o">]</span>
 </pre></div>
 </div>
+<p>spectracles needs Python 3.11 or later, so on Python 3.10 the extra installs
+lvm_tools without it.</p>
 <p>This installs the <code class="docutils literal notranslate"><span class="pre">spectracles</span></code> package and enables the <code class="docutils literal notranslate"><span class="pre">αδ_data</span></code> property on <code class="docutils literal notranslate"><span class="pre">FitData</span></code> objects.</p>
 </section>
 </section>

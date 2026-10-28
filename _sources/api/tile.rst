@@ -172,6 +172,9 @@ Helper Functions
 
    Convert an array to a Dask array with native byte order.
 
+   The array (typically a FITS memmap) is read lazily: computing a slice reads
+   and byte-swaps only the chunks it touches, not the whole array.
+
    :param array: Input array
    :type array: ArrayLike
    :param chunks: Chunk specification for Dask
