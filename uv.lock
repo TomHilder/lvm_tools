@@ -443,7 +443,8 @@ name = "equinox"
 version = "0.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "jax", version = "0.10.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "jaxtyping" },
     { name = "typing-extensions" },
     { name = "wadler-lindig" },
@@ -596,7 +597,8 @@ name = "jax-finufft"
 version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "jax", version = "0.10.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "numpy", version = "2.3.2", source = { registry = "https://pypi.org/simple" } },
     { name = "pydantic" },
 ]
@@ -881,7 +883,7 @@ dependencies = [
 
 [package.optional-dependencies]
 spectracles = [
-    { name = "spectracles", marker = "python_full_version >= '3.13'" },
+    { name = "spectracles", marker = "python_full_version >= '3.11'" },
 ]
 
 [package.dev-dependencies]
@@ -903,7 +905,7 @@ requires-dist = [
     { name = "jax", specifier = ">=0.4.31" },
     { name = "numpy", specifier = ">=2.0.0" },
     { name = "scipy", specifier = ">=1.11.0" },
-    { name = "spectracles", marker = "python_full_version >= '3.13' and extra == 'spectracles'", specifier = ">=0.5.1" },
+    { name = "spectracles", marker = "python_full_version >= '3.11' and extra == 'spectracles'", specifier = ">=0.5.1" },
     { name = "xarray", specifier = ">=2024.1.0" },
 ]
 provides-extras = ["spectracles"]
@@ -1389,8 +1391,10 @@ version = "0.2.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "absl-py" },
-    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" } },
-    { name = "jaxlib", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "jax", version = "0.10.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "jaxlib", version = "0.10.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "jaxlib", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "numpy", version = "2.3.2", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/8c/f9/e3d11ae6f298ee941a0690e353a323d158ba5dedc436e75621c310845c5c/optax-0.2.8.tar.gz", hash = "sha256:5b225b35066fc3eebaa4d798f1b4173b4d57d1a480610908981f8343b50af0b0", size = 301193, upload-time = "2026-03-20T23:30:05.465Z" }
@@ -2022,7 +2026,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dill" },
     { name = "equinox" },
-    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "jax", version = "0.10.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "jax", version = "0.12.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "jax-finufft" },
     { name = "jaxtyping" },
     { name = "matplotlib" },

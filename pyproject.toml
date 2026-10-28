@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-spectracles = ["spectracles>=0.5.1; python_version>='3.13'"]
+spectracles = ["spectracles>=0.5.1; python_version>='3.11'"]
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]

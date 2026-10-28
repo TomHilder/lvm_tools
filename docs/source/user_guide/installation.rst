@@ -58,8 +58,8 @@ For use with the `spectracles <https://github.com/TomHilder/spectracles>`_ spect
 
    pip install lvm-tools[spectracles]
 
-The extra only installs spectracles on Python 3.13 or later. On older Pythons,
-install spectracles separately.
+spectracles needs Python 3.11 or later, so on Python 3.10 the extra installs
+lvm_tools without it.
 
 This installs the ``spectracles`` package and enables the ``αδ_data`` property on ``FitData`` objects.
 
