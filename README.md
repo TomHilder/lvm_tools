@@ -26,6 +26,10 @@ cd lvm_tools
 pip install -e .
 ```
 
+## Documentation
+
+Full documentation: [tomhilder.github.io/lvm_tools](https://tomhilder.github.io/lvm_tools/)
+
 ## Usage
 
 TODO

@@ -17,6 +17,8 @@ Changed
   ``Exception`` still catches them.
 - Development: ruff is in the dev dependency group, and CI runs
   ``ruff check`` and ``ruff format --check``.
+- Documentation moved from ReadTheDocs to GitHub Pages
+  (https://tomhilder.github.io/lvm_tools/), deployed with each release.
 
 [0.1.2] - 2026-10-27
 --------------------
