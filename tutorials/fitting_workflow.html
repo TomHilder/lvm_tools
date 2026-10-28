@@ -1,0 +1,879 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tutorial: Model Fitting Workflow &#8212; lvm_tools  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=efb5a123" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/fitting_workflow';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Overview" href="../api/overview.html" />
+    <link rel="prev" title="Tutorial: Data Configuration" href="data_configuration.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">lvm_tools  documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/concepts.html">Core Concepts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="loading_data.html">Tutorial: Loading LVM Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploring_data.html">Tutorial: Exploring LVM Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_configuration.html">Tutorial: Data Configuration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Model Fitting Workflow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/overview.html">API Overview</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/tile.html">Data Loading API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/config.html">Configuration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/fit_data.html">Fit Data API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/processing.html">Processing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/utils.html">Utilities API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools/edit/main/docs/source/tutorials/fitting_workflow.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools/issues/new?title=Issue%20on%20page%20%2Ftutorials/fitting_workflow.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tutorials/fitting_workflow.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tutorial: Model Fitting Workflow</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-load-data">Step 1: Load Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-configure-processing">Step 2: Configure Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-build-fitdata">Step 3: Build FitData</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-access-data-arrays">Step 4: Access Data Arrays</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-data">Spectral Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data">Spatial Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#masking">Masking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing">Indexing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#physical-properties">Physical Properties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-model-fitting">Step 5: Model Fitting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-with-jax-models">Using with JAX Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-with-spectracles">Using with spectracles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibility">Reproducibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-management">Memory Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tutorial-model-fitting-workflow">
+<h1>Tutorial: Model Fitting Workflow<a class="headerlink" href="#tutorial-model-fitting-workflow" title="Link to this heading">#</a></h1>
+<p>This tutorial demonstrates a complete workflow from data loading to model-ready arrays.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The typical <strong>lvm_tools</strong> workflow consists of:</p>
+<ol class="arabic simple">
+<li><p>Load raw data from FITS files</p></li>
+<li><p>Configure data processing parameters</p></li>
+<li><p>Build normalised arrays for fitting</p></li>
+<li><p>Access data properties for model construction</p></li>
+</ol>
+<p>This tutorial covers each step in detail.</p>
+</section>
+<section id="step-1-load-data">
+<h2>Step 1: Load Data<a class="headerlink" href="#step-1-load-data" title="Link to this heading">#</a></h2>
+<p>Begin by loading one or more tiles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LVMTile</span><span class="p">,</span> <span class="n">LVMTileCollection</span>
+
+<span class="c1"># Single tile</span>
+<span class="n">tile</span> <span class="o">=</span> <span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"/path/to/observation.fits"</span><span class="p">))</span>
+
+<span class="c1"># Multiple tiles (e.g., dithered observations)</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"/path/to/data/"</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.fits"</span><span class="p">))</span>
+<span class="n">tiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">paths</span><span class="p">)]</span>
+<span class="n">collection</span> <span class="o">=</span> <span class="n">LVMTileCollection</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">tiles</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-configure-processing">
+<h2>Step 2: Configure Processing<a class="headerlink" href="#step-2-configure-processing" title="Link to this heading">#</a></h2>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">DataConfig</span></code> that matches your analysis requirements:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataConfig</span>
+
+<span class="c1"># For emission line analysis</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span>
+    <span class="n">collection</span><span class="p">,</span>
+    <span class="n">λ_range</span><span class="o">=</span><span class="p">(</span><span class="mf">6500.0</span><span class="p">,</span> <span class="mf">6800.0</span><span class="p">),</span>  <span class="c1"># H-alpha region</span>
+    <span class="n">nans_strategy</span><span class="o">=</span><span class="s2">"pixel"</span><span class="p">,</span>
+    <span class="n">F_bad_strategy</span><span class="o">=</span><span class="s2">"spaxel"</span><span class="p">,</span>
+    <span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"98 only"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Inspect the configuration</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-build-fitdata">
+<h2>Step 3: Build FitData<a class="headerlink" href="#step-3-build-fitdata" title="Link to this heading">#</a></h2>
+<p>Combine tiles and configuration to produce fit-ready data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">FitDataBuilder</span>
+
+<span class="c1"># Create builder</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">FitDataBuilder</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="n">collection</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># Build the data (triggers Dask computation)</span>
+<span class="n">fit_data</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<span class="c1"># Record the pipeline hash for reproducibility</span>
+<span class="n">pipeline_hash</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">hash</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Pipeline: </span><span class="si">{</span><span class="n">pipeline_hash</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-access-data-arrays">
+<h2>Step 4: Access Data Arrays<a class="headerlink" href="#step-4-access-data-arrays" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">FitData</span></code> provides normalised JAX arrays:</p>
+<section id="spectral-data">
+<h3>Spectral Data<a class="headerlink" href="#spectral-data" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Normalised flux (NaN replaced with 0)</span>
+<span class="n">flux</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Flux shape: </span><span class="si">{</span><span class="n">flux</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Inverse variance (NaN replaced with small value)</span>
+<span class="n">ivar</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">i_var</span>
+
+<span class="c1"># Uncertainty (standard deviation)</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">u_flux</span>
+
+<span class="c1"># Wavelength grid</span>
+<span class="n">wavelength</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">λ</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Wavelength range: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Å"</span><span class="p">)</span>
+
+<span class="c1"># Line spread function</span>
+<span class="n">lsf</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">lsf_σ</span>
+</pre></div>
+</div>
+</section>
+<section id="spatial-data">
+<h3>Spatial Data<a class="headerlink" href="#spatial-data" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Normalised coordinates (mapped to [-π, π])</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">α</span>  <span class="c1"># Right ascension</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">δ</span>  <span class="c1"># Declination</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of spaxels: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Convert back to physical coordinates</span>
+<span class="n">ra_physical</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">predict_α</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">dec_physical</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">predict_δ</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="masking">
+<h3>Masking<a class="headerlink" href="#masking" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Boolean mask (True where data is valid)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">mask</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Valid pixels: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">mask</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Apply mask in computations</span>
+<span class="n">masked_flux</span> <span class="o">=</span> <span class="n">flux</span> <span class="o">*</span> <span class="n">mask</span>
+</pre></div>
+</div>
+</section>
+<section id="indexing">
+<h3>Indexing<a class="headerlink" href="#indexing" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wavelength indices</span>
+<span class="n">λ_idx</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">λ_idx</span>
+
+<span class="c1"># Spaxel indices</span>
+<span class="n">spaxel_idx</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">spaxel_idx</span>
+
+<span class="c1"># Tile indices (for multi-tile data)</span>
+<span class="n">tile_idx</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">tile_idx</span>
+
+<span class="c1"># IFU bundle indices</span>
+<span class="n">ifu_idx</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">ifu_idx</span>
+
+<span class="c1"># Fibre indices</span>
+<span class="n">fibre_idx</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">fibre_idx</span>
+</pre></div>
+</div>
+</section>
+<section id="physical-properties">
+<h3>Physical Properties<a class="headerlink" href="#physical-properties" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Observation time</span>
+<span class="n">mjd</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">mjd</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MJD: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">mjd</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Barycentric velocity correction</span>
+<span class="n">v_bary</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">v_bary</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"v_bary range: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">v_bary</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">v_bary</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km/s"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="step-5-model-fitting">
+<h2>Step 5: Model Fitting<a class="headerlink" href="#step-5-model-fitting" title="Link to this heading">#</a></h2>
+<section id="using-with-jax-models">
+<h3>Using with JAX Models<a class="headerlink" href="#using-with-jax-models" title="Link to this heading">#</a></h3>
+<p>The arrays are ready for JAX-based model fitting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+
+<span class="c1"># Example: compute mean spectrum</span>
+<span class="n">mean_spectrum</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Example: compute spatial weighted mean</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">weighted_mean</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-with-spectracles">
+<h3>Using with spectracles<a class="headerlink" href="#using-with-spectracles" title="Link to this heading">#</a></h3>
+<p>When <code class="docutils literal notranslate"><span class="pre">spectracles</span></code> is installed, access the spatial data structure directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get spectracles-compatible spatial data</span>
+<span class="n">spatial_data</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">αδ_data</span>
+
+<span class="c1"># Use with spectracles models</span>
+<span class="c1"># from spectracles import SomeSpatialModel</span>
+<span class="c1"># model = SomeSpatialModel(spatial_data, ...)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="reproducibility">
+<h2>Reproducibility<a class="headerlink" href="#reproducibility" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">FitDataBuilder.hash()</span></code> method generates a unique identifier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># Generate hash</span>
+<span class="n">pipeline_hash</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">hash</span><span class="p">()</span>
+
+<span class="c1"># Save configuration for reproducibility</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"hash"</span><span class="p">:</span> <span class="n">pipeline_hash</span><span class="p">,</span>
+    <span class="s2">"config"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+    <span class="s2">"n_tiles"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span>
+    <span class="s2">"exposures"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"pipeline_metadata.json"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="memory-management">
+<h2>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading">#</a></h2>
+<p>For large datasets, manage memory carefully:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
+
+<span class="c1"># Process in batches</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="n">batch_paths</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]</span>
+    <span class="n">batch_tiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">batch_paths</span><span class="p">]</span>
+    <span class="n">batch_collection</span> <span class="o">=</span> <span class="n">LVMTileCollection</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">batch_tiles</span><span class="p">)</span>
+
+    <span class="c1"># Configure and build</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">batch_collection</span><span class="p">,</span> <span class="n">λ_range</span><span class="o">=</span><span class="p">(</span><span class="mf">6500.0</span><span class="p">,</span> <span class="mf">6800.0</span><span class="p">))</span>
+    <span class="n">fit_data</span> <span class="o">=</span> <span class="n">FitDataBuilder</span><span class="p">(</span><span class="n">batch_collection</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="c1"># Process this batch</span>
+    <span class="c1"># ...</span>
+
+    <span class="c1"># Clean up</span>
+    <span class="k">del</span> <span class="n">batch_tiles</span><span class="p">,</span> <span class="n">batch_collection</span><span class="p">,</span> <span class="n">fit_data</span>
+    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-example">
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LVMTile</span><span class="p">,</span> <span class="n">LVMTileCollection</span><span class="p">,</span> <span class="n">DataConfig</span><span class="p">,</span> <span class="n">FitDataBuilder</span>
+
+<span class="c1"># 1. Load data</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"/path/to/lvm/data/"</span><span class="p">)</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"lvm-drp-*.fits"</span><span class="p">))</span>
+<span class="n">tiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span>
+<span class="n">collection</span> <span class="o">=</span> <span class="n">LVMTileCollection</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">tiles</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tiles</span><span class="p">)</span><span class="si">}</span><span class="s2"> tiles"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+
+<span class="c1"># 2. Configure processing</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span>
+    <span class="n">collection</span><span class="p">,</span>
+    <span class="n">λ_range</span><span class="o">=</span><span class="p">(</span><span class="mf">6500.0</span><span class="p">,</span> <span class="mf">6800.0</span><span class="p">),</span>
+    <span class="n">nans_strategy</span><span class="o">=</span><span class="s2">"pixel"</span><span class="p">,</span>
+    <span class="n">F_bad_strategy</span><span class="o">=</span><span class="s2">"spaxel"</span><span class="p">,</span>
+    <span class="n">fibre_status_include</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span>
+    <span class="n">apply_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"98 only"</span><span class="p">,</span>
+    <span class="n">normalise_αδ_strategy</span><span class="o">=</span><span class="s2">"padded"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Configuration:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># 3. Build fit data</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">FitDataBuilder</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="n">collection</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">fit_data</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Fit data built successfully"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Flux shape: </span><span class="si">{</span><span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Wavelength points: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">λ</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Spaxels: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">α</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># 4. Save metadata</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"pipeline_hash"</span><span class="p">:</span> <span class="n">builder</span><span class="o">.</span><span class="n">hash</span><span class="p">(),</span>
+    <span class="s2">"config"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+    <span class="s2">"n_tiles"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span>
+    <span class="s2">"flux_shape"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"analysis_metadata.json"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+<span class="c1"># 5. Ready for model fitting</span>
+<span class="c1"># ... your analysis code here ...</span>
+</pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/fit_data.html"><span class="doc">Fit Data API</span></a>: Complete FitData API reference</p></li>
+<li><p><a class="reference internal" href="../api/processing.html"><span class="doc">Processing API</span></a>: Processing utilities</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="data_configuration.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tutorial: Data Configuration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../api/overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Overview</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-load-data">Step 1: Load Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-configure-processing">Step 2: Configure Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-build-fitdata">Step 3: Build FitData</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-access-data-arrays">Step 4: Access Data Arrays</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-data">Spectral Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data">Spatial Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#masking">Masking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing">Indexing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#physical-properties">Physical Properties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-model-fitting">Step 5: Model Fitting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-with-jax-models">Using with JAX Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-with-spectracles">Using with spectracles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibility">Reproducibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-management">Memory Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tom Hilder
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Tom Hilder.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

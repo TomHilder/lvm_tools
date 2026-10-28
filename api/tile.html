@@ -1,0 +1,932 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Loading API &#8212; lvm_tools  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=efb5a123" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/tile';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration API" href="config.html" />
+    <link rel="prev" title="API Overview" href="overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">lvm_tools  documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/concepts.html">Core Concepts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/loading_data.html">Tutorial: Loading LVM Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/exploring_data.html">Tutorial: Exploring LVM Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/data_configuration.html">Tutorial: Data Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/fitting_workflow.html">Tutorial: Model Fitting Workflow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="overview.html">API Overview</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Loading API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Configuration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fit_data.html">Fit Data API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing.html">Processing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools/edit/main/docs/source/api/tile.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools/issues/new?title=Issue%20on%20page%20%2Fapi/tile.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/tile.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Loading API</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lvmtile">LVMTile</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile.data"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile.data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile.meta"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile.meta</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile.from_file"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile.from_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lvmtilemeta">LVMTileMeta</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.filename"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.filename</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.tile_id"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.tile_id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.exp_num"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.exp_num</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.drp_ver"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.drp_ver</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lvmtilecollection">LVMTileCollection</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection.data"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection.data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection.meta"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection.meta</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection.from_tiles"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection.from_tiles()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-aliases">Type Aliases</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileLike"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileLike</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#physical-constants">Physical Constants</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SIGMA_TO_FWHM"><code class="docutils literal notranslate"><span class="pre">SIGMA_TO_FWHM</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FWHM_TO_SIGMA"><code class="docutils literal notranslate"><span class="pre">FWHM_TO_SIGMA</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FLUX_UNIT"><code class="docutils literal notranslate"><span class="pre">FLUX_UNIT</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SPECTRAL_UNIT"><code class="docutils literal notranslate"><span class="pre">SPECTRAL_UNIT</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SPATIAL_UNIT"><code class="docutils literal notranslate"><span class="pre">SPATIAL_UNIT</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">Helper Functions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.helper.daskify_native"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.helper.daskify_native()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.helper.numpyfy_native"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.helper.numpyfy_native()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinate-utilities">Coordinate Utilities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.coordinates.get_mjd"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.coordinates.get_mjd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.coordinates.get_observatory_location"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.coordinates.get_observatory_location()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="data-loading-api">
+<h1>Data Loading API<a class="headerlink" href="#data-loading-api" title="Link to this heading">#</a></h1>
+<p>This module provides classes for loading and managing LVM DRP data.</p>
+<section id="lvmtile">
+<h2>LVMTile<a class="headerlink" href="#lvmtile" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lvm_tools.LVMTile">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lvm_tools.</span></span><span class="sig-name descname"><span class="pre">LVMTile</span></span><a class="headerlink" href="#lvm_tools.LVMTile" title="Link to this definition">#</a></dt>
+<dd><p>Container for a single LVM DRP observation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.LVMTile.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><span class="pre">xarray.Dataset</span></a></span><a class="headerlink" href="#lvm_tools.LVMTile.data" title="Link to this definition">#</a></dt>
+<dd><p>The observation data stored as an xarray Dataset with the following structure:</p>
+<p><strong>Data Variables</strong> (Dask arrays):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flux</span></code>: Flux cube, shape <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">n_spaxels,</span> <span class="pre">n_wavelengths)</span></code>, units erg cm⁻² s⁻¹ Å⁻¹</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i_var</span></code>: Inverse variance, same shape as flux</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lsf_sigma</span></code>: Line spread function (sigma), same shape as flux, units Å</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask</span></code>: DRP quality mask, same shape as flux</p></li>
+</ul>
+<p><strong>Coordinates</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tile</span></code>: Tile index (length 1 for single tile)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spaxel</span></code>: Spaxel index</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wavelength</span></code>: Wavelength grid in Angstroms</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mjd</span></code>: Modified Julian Date of observation midpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ra</span></code>: Right ascension of each spaxel, shape <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">n_spaxels)</span></code>, units degrees</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dec</span></code>: Declination of each spaxel, shape <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">n_spaxels)</span></code>, units degrees</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fibre_id</span></code>: Fibre identifier</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifu_label</span></code>: IFU bundle label (“Sci1”, “Sci2”, “Sci3”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fibre_status</span></code>: Fibre quality flag (0=good)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.LVMTile.meta">
+<span class="sig-name descname"><span class="pre">meta</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.data.tile.LVMTileMeta" title="lvm_tools.data.tile.LVMTileMeta"><span class="pre">LVMTileMeta</span></a></span><a class="headerlink" href="#lvm_tools.LVMTile.meta" title="Link to this definition">#</a></dt>
+<dd><p>Metadata for the observation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lvm_tools.LVMTile.from_file">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drp_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.LVMTile.from_file" title="Link to this definition">#</a></dt>
+<dd><p>Load a tile from a DRP FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>drp_file</strong> (<em>Path</em><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Path to the FITS file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loaded tile</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#lvm_tools.LVMTile" title="lvm_tools.LVMTile">LVMTile</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#FileNotFoundError" title="(in Python v3.15)"><strong>FileNotFoundError</strong></a> – If the file does not exist</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LVMTile</span>
+
+<span class="n">tile</span> <span class="o">=</span> <span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"/data/lvm-drp-12345-00001.fits"</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="lvmtilemeta">
+<h2>LVMTileMeta<a class="headerlink" href="#lvmtilemeta" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lvm_tools.data.tile.LVMTileMeta">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lvm_tools.data.tile.</span></span><span class="sig-name descname"><span class="pre">LVMTileMeta</span></span><a class="headerlink" href="#lvm_tools.data.tile.LVMTileMeta" title="Link to this definition">#</a></dt>
+<dd><p>Metadata container for an LVM observation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.data.tile.LVMTileMeta.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><a class="headerlink" href="#lvm_tools.data.tile.LVMTileMeta.filename" title="Link to this definition">#</a></dt>
+<dd><p>Name of the source FITS file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.data.tile.LVMTileMeta.tile_id">
+<span class="sig-name descname"><span class="pre">tile_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><a class="headerlink" href="#lvm_tools.data.tile.LVMTileMeta.tile_id" title="Link to this definition">#</a></dt>
+<dd><p>LVM tile identifier.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.data.tile.LVMTileMeta.exp_num">
+<span class="sig-name descname"><span class="pre">exp_num</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><a class="headerlink" href="#lvm_tools.data.tile.LVMTileMeta.exp_num" title="Link to this definition">#</a></dt>
+<dd><p>Exposure number within the tile.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.data.tile.LVMTileMeta.drp_ver">
+<span class="sig-name descname"><span class="pre">drp_ver</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><a class="headerlink" href="#lvm_tools.data.tile.LVMTileMeta.drp_ver" title="Link to this definition">#</a></dt>
+<dd><p>Data Reduction Pipeline version string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="lvmtilecollection">
+<h2>LVMTileCollection<a class="headerlink" href="#lvmtilecollection" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lvm_tools.LVMTileCollection">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lvm_tools.</span></span><span class="sig-name descname"><span class="pre">LVMTileCollection</span></span><a class="headerlink" href="#lvm_tools.LVMTileCollection" title="Link to this definition">#</a></dt>
+<dd><p>Container for multiple LVM observations combined along the tile dimension.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.LVMTileCollection.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><span class="pre">xarray.Dataset</span></a></span><a class="headerlink" href="#lvm_tools.LVMTileCollection.data" title="Link to this definition">#</a></dt>
+<dd><p>Combined observation data. Same structure as <code class="docutils literal notranslate"><span class="pre">LVMTile.data</span></code> but with
+<code class="docutils literal notranslate"><span class="pre">tile</span></code> dimension length equal to the number of tiles.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.LVMTileCollection.meta">
+<span class="sig-name descname"><span class="pre">meta</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.data.tile.LVMTileMeta" title="lvm_tools.data.tile.LVMTileMeta"><span class="pre">LVMTileMeta</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#lvm_tools.LVMTileCollection.meta" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary mapping exposure number to metadata for each tile.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lvm_tools.LVMTileCollection.from_tiles">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_tiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tiles</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.LVMTileCollection.from_tiles" title="Link to this definition">#</a></dt>
+<dd><p>Combine multiple tiles into a collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tiles</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>[</em><a class="reference internal" href="#lvm_tools.LVMTile" title="lvm_tools.LVMTile"><em>LVMTile</em></a><em>]</em>) – List of tiles to combine</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Combined collection</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#lvm_tools.LVMTileCollection" title="lvm_tools.LVMTileCollection">LVMTileCollection</a></p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LVMTile</span><span class="p">,</span> <span class="n">LVMTileCollection</span>
+
+<span class="n">tiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span>
+<span class="n">collection</span> <span class="o">=</span> <span class="n">LVMTileCollection</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">tiles</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Combined shape: </span><span class="si">{</span><span class="n">collection</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'flux'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="type-aliases">
+<h2>Type Aliases<a class="headerlink" href="#type-aliases" title="Link to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="lvm_tools.data.tile.LVMTileLike">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.data.tile.</span></span><span class="sig-name descname"><span class="pre">LVMTileLike</span></span><a class="headerlink" href="#lvm_tools.data.tile.LVMTileLike" title="Link to this definition">#</a></dt>
+<dd><p>Union type for <code class="docutils literal notranslate"><span class="pre">LVMTile</span> <span class="pre">|</span> <span class="pre">LVMTileCollection</span></code>.</p>
+<p>Functions accepting <code class="docutils literal notranslate"><span class="pre">LVMTileLike</span></code> can operate on either single tiles
+or collections.</p>
+</dd></dl>
+
+</section>
+<section id="physical-constants">
+<h2>Physical Constants<a class="headerlink" href="#physical-constants" title="Link to this heading">#</a></h2>
+<p>The following constants are defined in <code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile</span></code>:</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="SIGMA_TO_FWHM">
+<span class="sig-name descname"><span class="pre">SIGMA_TO_FWHM</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.355</span></span><a class="headerlink" href="#SIGMA_TO_FWHM" title="Link to this definition">#</a></dt>
+<dd><p>Conversion factor from Gaussian sigma to FWHM: <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">sqrt(2</span> <span class="pre">*</span> <span class="pre">ln(2))</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="FWHM_TO_SIGMA">
+<span class="sig-name descname"><span class="pre">FWHM_TO_SIGMA</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.425</span></span><a class="headerlink" href="#FWHM_TO_SIGMA" title="Link to this definition">#</a></dt>
+<dd><p>Conversion factor from FWHM to Gaussian sigma.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="FLUX_UNIT">
+<span class="sig-name descname"><span class="pre">FLUX_UNIT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.units.Unit.html#astropy.units.Unit" title="(in Astropy v8.0)"><span class="pre">astropy.units.Unit</span></a></span><a class="headerlink" href="#FLUX_UNIT" title="Link to this definition">#</a></dt>
+<dd><p>Physical unit for flux: erg cm⁻² s⁻¹ Å⁻¹.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="SPECTRAL_UNIT">
+<span class="sig-name descname"><span class="pre">SPECTRAL_UNIT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.units.Unit.html#astropy.units.Unit" title="(in Astropy v8.0)"><span class="pre">astropy.units.Unit</span></a></span><a class="headerlink" href="#SPECTRAL_UNIT" title="Link to this definition">#</a></dt>
+<dd><p>Physical unit for wavelength: Angstrom.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="SPATIAL_UNIT">
+<span class="sig-name descname"><span class="pre">SPATIAL_UNIT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.units.Unit.html#astropy.units.Unit" title="(in Astropy v8.0)"><span class="pre">astropy.units.Unit</span></a></span><a class="headerlink" href="#SPATIAL_UNIT" title="Link to this definition">#</a></dt>
+<dd><p>Physical unit for coordinates: degree.</p>
+</dd></dl>
+
+</section>
+<section id="helper-functions">
+<h2>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.data.helper.daskify_native">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.data.helper.</span></span><span class="sig-name descname"><span class="pre">daskify_native</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.data.helper.daskify_native" title="Link to this definition">#</a></dt>
+<dd><p>Convert an array to a Dask array with native byte order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>ArrayLike</em>) – Input array</p></li>
+<li><p><strong>chunks</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><em>tuple</em></a>) – Chunk specification for Dask</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dask array with native byte order</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.dask.org/en/stable/generated/dask.array.Array.html#dask.array.Array" title="(in Dask)">dask.array.Array</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.data.helper.numpyfy_native">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.data.helper.</span></span><span class="sig-name descname"><span class="pre">numpyfy_native</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.data.helper.numpyfy_native" title="Link to this definition">#</a></dt>
+<dd><p>Convert an array to NumPy with native byte order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>array</strong> (<em>ArrayLike</em>) – Input array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NumPy array with native byte order</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="coordinate-utilities">
+<h2>Coordinate Utilities<a class="headerlink" href="#coordinate-utilities" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.data.coordinates.get_mjd">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.data.coordinates.</span></span><span class="sig-name descname"><span class="pre">get_mjd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.data.coordinates.get_mjd" title="Link to this definition">#</a></dt>
+<dd><p>Extract the observation midpoint MJD from a FITS header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>header</strong> (<a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header" title="(in Astropy v8.0)"><em>astropy.io.fits.Header</em></a>) – FITS header containing INTSTART and INTEND keywords</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified Julian Date of observation midpoint</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If time information is not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.data.coordinates.get_observatory_location">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.data.coordinates.</span></span><span class="sig-name descname"><span class="pre">get_observatory_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observatory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.data.coordinates.get_observatory_location" title="Link to this definition">#</a></dt>
+<dd><p>Get the Earth location for an observatory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>observatory</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Observatory code (e.g., “LCO”)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Observatory location</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.coordinates.EarthLocation.html#astropy.coordinates.EarthLocation" title="(in Astropy v8.0)">astropy.coordinates.EarthLocation</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If observatory is unknown</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="config.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Configuration API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lvmtile">LVMTile</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile.data"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile.data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile.meta"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile.meta</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTile.from_file"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTile.from_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lvmtilemeta">LVMTileMeta</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.filename"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.filename</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.tile_id"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.tile_id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.exp_num"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.exp_num</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileMeta.drp_ver"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileMeta.drp_ver</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lvmtilecollection">LVMTileCollection</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection.data"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection.data</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection.meta"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection.meta</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.LVMTileCollection.from_tiles"><code class="docutils literal notranslate"><span class="pre">lvm_tools.LVMTileCollection.from_tiles()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-aliases">Type Aliases</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.tile.LVMTileLike"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.tile.LVMTileLike</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#physical-constants">Physical Constants</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SIGMA_TO_FWHM"><code class="docutils literal notranslate"><span class="pre">SIGMA_TO_FWHM</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FWHM_TO_SIGMA"><code class="docutils literal notranslate"><span class="pre">FWHM_TO_SIGMA</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FLUX_UNIT"><code class="docutils literal notranslate"><span class="pre">FLUX_UNIT</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SPECTRAL_UNIT"><code class="docutils literal notranslate"><span class="pre">SPECTRAL_UNIT</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SPATIAL_UNIT"><code class="docutils literal notranslate"><span class="pre">SPATIAL_UNIT</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">Helper Functions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.helper.daskify_native"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.helper.daskify_native()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.helper.numpyfy_native"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.helper.numpyfy_native()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinate-utilities">Coordinate Utilities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.coordinates.get_mjd"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.coordinates.get_mjd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.data.coordinates.get_observatory_location"><code class="docutils literal notranslate"><span class="pre">lvm_tools.data.coordinates.get_observatory_location()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tom Hilder
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Tom Hilder.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

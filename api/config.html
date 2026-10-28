@@ -1,0 +1,934 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Configuration API &#8212; lvm_tools  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=efb5a123" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/config';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fit Data API" href="fit_data.html" />
+    <link rel="prev" title="Data Loading API" href="tile.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">lvm_tools  documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/concepts.html">Core Concepts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/loading_data.html">Tutorial: Loading LVM Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/exploring_data.html">Tutorial: Exploring LVM Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/data_configuration.html">Tutorial: Data Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/fitting_workflow.html">Tutorial: Model Fitting Workflow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="overview.html">API Overview</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tile.html">Data Loading API</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Configuration API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fit_data.html">Fit Data API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing.html">Processing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities API</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools/edit/main/docs/source/api/config.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/TomHilder/lvm_tools/issues/new?title=Issue%20on%20page%20%2Fapi/config.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/config.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Configuration API</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataconfig">DataConfig</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig._range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.λ_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.α_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.δ_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.nans_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.nans_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.F_bad_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.F_bad_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.F_range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.F_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.fibre_status_include"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.fibre_status_include</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.apply_mask"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.apply_mask</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise_F_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_F_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise_F_offset"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_F_offset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise_F_scale"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_F_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise__strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_αδ_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise__offset"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_α_offset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise__scale"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_α_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_δ_offset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_δ_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.default"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.default()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.from_tiles"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.from_tiles()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.from_dict"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.from_dict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-definitions">Type Definitions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.clipping.Range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.clipping.Range</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.clipping.Ranges"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.clipping.Ranges</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.filtering.ExcludeStrategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.filtering.ExcludeStrategy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.filtering.FibreStatus"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.filtering.FibreStatus</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.normalisation.NormaliseStrategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.normalisation.NormaliseStrategy</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-functions">Validation Functions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.config.validation.validate_range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.config.validation.validate_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.config.validation.validate_excl_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.config.validation.validate_excl_strategy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.config.validation.validate_norm_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.config.validation.validate_norm_strategy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="configuration-api">
+<h1>Configuration API<a class="headerlink" href="#configuration-api" title="Link to this heading">#</a></h1>
+<p>This module provides the configuration system for data processing.</p>
+<section id="dataconfig">
+<h2>DataConfig<a class="headerlink" href="#dataconfig" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">lvm_tools.</span></span><span class="sig-name descname"><span class="pre">DataConfig</span></span><a class="headerlink" href="#lvm_tools.DataConfig" title="Link to this definition">#</a></dt>
+<dd><p>Immutable configuration object specifying all data processing parameters.</p>
+<p>All parameters are validated on instantiation. Invalid values raise
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code> or <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
+<p><strong>Clipping Parameters</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig._range">
+<span class="sig-name descname"><span class="pre">λ_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.clipping.Range" title="lvm_tools.fit_data.clipping.Range"><span class="pre">Range</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.clipping.Ranges" title="lvm_tools.fit_data.clipping.Ranges"><span class="pre">Ranges</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(-inf,</span> <span class="pre">inf)</span></span><a class="headerlink" href="#lvm_tools.DataConfig._range" title="Link to this definition">#</a></dt>
+<dd><p>Wavelength range(s) to include in Angstroms.</p>
+<p>Single range: <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code></p>
+<p>Multiple ranges: <code class="docutils literal notranslate"><span class="pre">((min1,</span> <span class="pre">max1),</span> <span class="pre">(min2,</span> <span class="pre">max2),</span> <span class="pre">...)</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">α_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.clipping.Range" title="lvm_tools.fit_data.clipping.Range"><span class="pre">Range</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(-inf,</span> <span class="pre">inf)</span></span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>Right ascension range in degrees: <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">δ_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.clipping.Range" title="lvm_tools.fit_data.clipping.Range"><span class="pre">Range</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(-inf,</span> <span class="pre">inf)</span></span><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><p>Declination range in degrees: <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code>.</p>
+</dd></dl>
+
+<p><strong>Filtering Parameters</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.nans_strategy">
+<span class="sig-name descname"><span class="pre">nans_strategy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.filtering.ExcludeStrategy" title="lvm_tools.fit_data.filtering.ExcludeStrategy"><span class="pre">ExcludeStrategy</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;pixel&quot;</span></span><a class="headerlink" href="#lvm_tools.DataConfig.nans_strategy" title="Link to this definition">#</a></dt>
+<dd><p>Strategy for handling NaN values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;pixel&quot;</span></code>: Exclude individual NaN pixels</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;spaxel&quot;</span></code>: Exclude entire spaxels containing any NaN</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.F_bad_strategy">
+<span class="sig-name descname"><span class="pre">F_bad_strategy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.filtering.ExcludeStrategy" title="lvm_tools.fit_data.filtering.ExcludeStrategy"><span class="pre">ExcludeStrategy</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;spaxel&quot;</span></span><a class="headerlink" href="#lvm_tools.DataConfig.F_bad_strategy" title="Link to this definition">#</a></dt>
+<dd><p>Strategy for identifying bad flux values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;pixel&quot;</span></code>: Apply threshold per pixel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;spaxel&quot;</span></code>: Apply threshold to median flux per spaxel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;spaxel_max&quot;</span></code>: Apply threshold to maximum flux per spaxel</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.F_range">
+<span class="sig-name descname"><span class="pre">F_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.clipping.Range" title="lvm_tools.fit_data.clipping.Range"><span class="pre">Range</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(-0.1e-13,</span> <span class="pre">inf)</span></span><a class="headerlink" href="#lvm_tools.DataConfig.F_range" title="Link to this definition">#</a></dt>
+<dd><p>Valid flux range: <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.fibre_status_include">
+<span class="sig-name descname"><span class="pre">fibre_status_include</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#lvm_tools.fit_data.filtering.FibreStatus" title="lvm_tools.fit_data.filtering.FibreStatus"><span class="pre">FibreStatus</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,)</span></span><a class="headerlink" href="#lvm_tools.DataConfig.fibre_status_include" title="Link to this definition">#</a></dt>
+<dd><p>Tuple of fibre status values to include. Status 0 indicates good fibres.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.apply_mask">
+<span class="sig-name descname"><span class="pre">apply_mask</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#lvm_tools.DataConfig.apply_mask" title="Link to this definition">#</a></dt>
+<dd><p>Whether to apply the DRP quality mask.</p>
+</dd></dl>
+
+<p><strong>Flux Normalisation Parameters</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.normalise_F_strategy">
+<span class="sig-name descname"><span class="pre">normalise_F_strategy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.normalisation.NormaliseStrategy" title="lvm_tools.fit_data.normalisation.NormaliseStrategy"><span class="pre">NormaliseStrategy</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;max</span> <span class="pre">only&quot;</span></span><a class="headerlink" href="#lvm_tools.DataConfig.normalise_F_strategy" title="Link to this definition">#</a></dt>
+<dd><p>Flux normalisation strategy:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: No normalisation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;max</span> <span class="pre">only&quot;</span></code>: Divide by maximum value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;98</span> <span class="pre">only&quot;</span></code>: Divide by 98th percentile</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;extrema&quot;</span></code>: Shift to minimum, scale by range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;1σ&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;2σ&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;3σ&quot;</span></code>: Centre on mean, scale by N standard deviations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;padded&quot;</span></code>: Shift and scale with 1% padding</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.normalise_F_offset">
+<span class="sig-name descname"><span class="pre">normalise_F_offset</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#lvm_tools.DataConfig.normalise_F_offset" title="Link to this definition">#</a></dt>
+<dd><p>Offset for flux normalisation: <code class="docutils literal notranslate"><span class="pre">(flux</span> <span class="pre">-</span> <span class="pre">offset)</span> <span class="pre">/</span> <span class="pre">scale</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.normalise_F_scale">
+<span class="sig-name descname"><span class="pre">normalise_F_scale</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></span><a class="headerlink" href="#lvm_tools.DataConfig.normalise_F_scale" title="Link to this definition">#</a></dt>
+<dd><p>Scale for flux normalisation.</p>
+</dd></dl>
+
+<p><strong>Coordinate Normalisation Parameters</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.normalise__strategy">
+<span class="sig-name descname"><span class="pre">normalise_αδ_strategy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lvm_tools.fit_data.normalisation.NormaliseStrategy" title="lvm_tools.fit_data.normalisation.NormaliseStrategy"><span class="pre">NormaliseStrategy</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;padded&quot;</span></span><a class="headerlink" href="#lvm_tools.DataConfig.normalise__strategy" title="Link to this definition">#</a></dt>
+<dd><p>Coordinate normalisation strategy (same options as flux).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.normalise__offset">
+<span class="sig-name descname"><span class="pre">normalise_α_offset</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#lvm_tools.DataConfig.normalise__offset" title="Link to this definition">#</a></dt>
+<dd><p>Right ascension offset.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.normalise__scale">
+<span class="sig-name descname"><span class="pre">normalise_α_scale</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></span><a class="headerlink" href="#lvm_tools.DataConfig.normalise__scale" title="Link to this definition">#</a></dt>
+<dd><p>Right ascension scale.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">normalise_δ_offset</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd><p>Declination offset.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">normalise_δ_scale</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><p>Declination scale.</p>
+</dd></dl>
+
+<p><strong>Class Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.default">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.DataConfig.default" title="Link to this definition">#</a></dt>
+<dd><p>Create a configuration with all default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Default configuration</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#lvm_tools.DataConfig" title="lvm_tools.DataConfig">DataConfig</a></p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.from_tiles">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_tiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">λ_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-inf,</span> <span class="pre">inf)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">overrides</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.DataConfig.from_tiles" title="Link to this definition">#</a></dt>
+<dd><p>Create a configuration from tile data with automatic parameter calculation.</p>
+<p>This method:</p>
+<ol class="arabic simple">
+<li><p>Computes spatial ranges from the tile data</p></li>
+<li><p>Clips and filters data according to defaults</p></li>
+<li><p>Calculates normalisation parameters from the processed data</p></li>
+<li><p>Applies any user-specified overrides</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tiles</strong> (<a class="reference internal" href="tile.html#lvm_tools.data.tile.LVMTileLike" title="lvm_tools.data.tile.LVMTileLike"><em>LVMTileLike</em></a>) – Input tile(s)</p></li>
+<li><p><strong>λ_range</strong> (<a class="reference internal" href="#lvm_tools.fit_data.clipping.Range" title="lvm_tools.fit_data.clipping.Range"><em>Range</em></a><em> | </em><a class="reference internal" href="#lvm_tools.fit_data.clipping.Ranges" title="lvm_tools.fit_data.clipping.Ranges"><em>Ranges</em></a>) – Wavelength range(s)</p></li>
+<li><p><strong>overrides</strong> – Additional parameters to override</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Configured instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#lvm_tools.DataConfig" title="lvm_tools.DataConfig">DataConfig</a></p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span>
+    <span class="n">tile</span><span class="p">,</span>
+    <span class="n">λ_range</span><span class="o">=</span><span class="p">(</span><span class="mf">6500.0</span><span class="p">,</span> <span class="mf">6800.0</span><span class="p">),</span>
+    <span class="n">normalise_F_strategy</span><span class="o">=</span><span class="s2">"98 only"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.from_dict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.DataConfig.from_dict" title="Link to this definition">#</a></dt>
+<dd><p>Create a configuration from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a>) – Dictionary with all configuration keys</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Configuration instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#lvm_tools.DataConfig" title="lvm_tools.DataConfig">DataConfig</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If dictionary has incorrect number of entries</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Instance Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lvm_tools.DataConfig.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.DataConfig.to_dict" title="Link to this definition">#</a></dt>
+<dd><p>Convert configuration to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="type-definitions">
+<h2>Type Definitions<a class="headerlink" href="#type-definitions" title="Link to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="lvm_tools.fit_data.clipping.Range">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.fit_data.clipping.</span></span><span class="sig-name descname"><span class="pre">Range</span></span><a class="headerlink" href="#lvm_tools.fit_data.clipping.Range" title="Link to this definition">#</a></dt>
+<dd><p>Type alias for <code class="docutils literal notranslate"><span class="pre">tuple[float,</span> <span class="pre">float]</span></code> representing a (min, max) range.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="lvm_tools.fit_data.clipping.Ranges">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.fit_data.clipping.</span></span><span class="sig-name descname"><span class="pre">Ranges</span></span><a class="headerlink" href="#lvm_tools.fit_data.clipping.Ranges" title="Link to this definition">#</a></dt>
+<dd><p>Type alias for <code class="docutils literal notranslate"><span class="pre">tuple[Range,</span> <span class="pre">...]</span></code> representing multiple ranges.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="lvm_tools.fit_data.filtering.ExcludeStrategy">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.fit_data.filtering.</span></span><span class="sig-name descname"><span class="pre">ExcludeStrategy</span></span><a class="headerlink" href="#lvm_tools.fit_data.filtering.ExcludeStrategy" title="Link to this definition">#</a></dt>
+<dd><p>Literal type: <code class="docutils literal notranslate"><span class="pre">None</span> <span class="pre">|</span> <span class="pre">&quot;pixel&quot;</span> <span class="pre">|</span> <span class="pre">&quot;spaxel&quot;</span> <span class="pre">|</span> <span class="pre">&quot;spaxel_max&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="lvm_tools.fit_data.filtering.FibreStatus">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.fit_data.filtering.</span></span><span class="sig-name descname"><span class="pre">FibreStatus</span></span><a class="headerlink" href="#lvm_tools.fit_data.filtering.FibreStatus" title="Link to this definition">#</a></dt>
+<dd><p>Literal type: <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">|</span> <span class="pre">1</span> <span class="pre">|</span> <span class="pre">2</span> <span class="pre">|</span> <span class="pre">3</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="lvm_tools.fit_data.normalisation.NormaliseStrategy">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.fit_data.normalisation.</span></span><span class="sig-name descname"><span class="pre">NormaliseStrategy</span></span><a class="headerlink" href="#lvm_tools.fit_data.normalisation.NormaliseStrategy" title="Link to this definition">#</a></dt>
+<dd><p>Literal type: <code class="docutils literal notranslate"><span class="pre">None</span> <span class="pre">|</span> <span class="pre">&quot;max</span> <span class="pre">only&quot;</span> <span class="pre">|</span> <span class="pre">&quot;98</span> <span class="pre">only&quot;</span> <span class="pre">|</span> <span class="pre">&quot;extrema&quot;</span> <span class="pre">|</span> <span class="pre">&quot;1σ&quot;</span> <span class="pre">|</span> <span class="pre">&quot;2σ&quot;</span> <span class="pre">|</span> <span class="pre">&quot;3σ&quot;</span> <span class="pre">|</span> <span class="pre">&quot;padded&quot;</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="validation-functions">
+<h2>Validation Functions<a class="headerlink" href="#validation-functions" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.config.validation.validate_range">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.config.validation.</span></span><span class="sig-name descname"><span class="pre">validate_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.config.validation.validate_range" title="Link to this definition">#</a></dt>
+<dd><p>Validate a range tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x_range</strong> (<a class="reference internal" href="#lvm_tools.fit_data.clipping.Range" title="lvm_tools.fit_data.clipping.Range"><em>Range</em></a>) – Range to validate</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If range has incorrect length or max &lt; min</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.config.validation.validate_excl_strategy">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.config.validation.</span></span><span class="sig-name descname"><span class="pre">validate_excl_strategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.config.validation.validate_excl_strategy" title="Link to this definition">#</a></dt>
+<dd><p>Validate an exclusion strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strategy</strong> (<a class="reference internal" href="#lvm_tools.fit_data.filtering.ExcludeStrategy" title="lvm_tools.fit_data.filtering.ExcludeStrategy"><em>ExcludeStrategy</em></a>) – Strategy to validate</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If strategy is not recognised</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lvm_tools.config.validation.validate_norm_strategy">
+<span class="sig-prename descclassname"><span class="pre">lvm_tools.config.validation.</span></span><span class="sig-name descname"><span class="pre">validate_norm_strategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lvm_tools.config.validation.validate_norm_strategy" title="Link to this definition">#</a></dt>
+<dd><p>Validate a normalisation strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strategy</strong> (<a class="reference internal" href="#lvm_tools.fit_data.normalisation.NormaliseStrategy" title="lvm_tools.fit_data.normalisation.NormaliseStrategy"><em>NormaliseStrategy</em></a>) – Strategy to validate</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If strategy is not recognised</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tile.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Data Loading API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fit_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Fit Data API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataconfig">DataConfig</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig._range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.λ_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.α_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.δ_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.nans_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.nans_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.F_bad_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.F_bad_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.F_range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.F_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.fibre_status_include"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.fibre_status_include</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.apply_mask"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.apply_mask</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise_F_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_F_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise_F_offset"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_F_offset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise_F_scale"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_F_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise__strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_αδ_strategy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise__offset"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_α_offset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.normalise__scale"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_α_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_δ_offset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.normalise_δ_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.default"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.default()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.from_tiles"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.from_tiles()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.from_dict"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.from_dict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.DataConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">lvm_tools.DataConfig.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-definitions">Type Definitions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.clipping.Range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.clipping.Range</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.clipping.Ranges"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.clipping.Ranges</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.filtering.ExcludeStrategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.filtering.ExcludeStrategy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.filtering.FibreStatus"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.filtering.FibreStatus</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.fit_data.normalisation.NormaliseStrategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.fit_data.normalisation.NormaliseStrategy</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-functions">Validation Functions</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.config.validation.validate_range"><code class="docutils literal notranslate"><span class="pre">lvm_tools.config.validation.validate_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.config.validation.validate_excl_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.config.validation.validate_excl_strategy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lvm_tools.config.validation.validate_norm_strategy"><code class="docutils literal notranslate"><span class="pre">lvm_tools.config.validation.validate_norm_strategy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tom Hilder
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Tom Hilder.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
