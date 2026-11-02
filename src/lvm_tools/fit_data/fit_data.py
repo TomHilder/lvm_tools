@@ -38,6 +38,15 @@ except Exception as e:  # noqa: BLE001 (any failure importing spectracles, e.g. 
     warnings.warn(msg, ImportWarning)
 
 
+def _deprecated(old: str, new: str) -> None:
+    warnings.warn(
+        f"FitData.{old} (coordinates scaled into [-π, π]) is deprecated: use {new}, with a "
+        "spectracles Domain for physical length scales.",
+        DeprecationWarning,
+        stacklevel=3,
+    )
+
+
 def to_π_domain(x):
     # return x * 2 * π - π
     return x * 2 * np.pi - np.pi
@@ -90,25 +99,43 @@ class FitData:
     def u_flux(self) -> JaxArray:
         return jnp.nan_to_num(self._u_flux, nan=1e2)
 
+    # Legacy: coordinates scaled into [-π, π] (deprecated, use the sky_* offsets)
+
+    def _α(self) -> JaxArray:
+        return to_π_domain(self.normalise_α(to_jax_array(self.processed_data["ra"].values)))
+
+    def _δ(self) -> JaxArray:
+        return to_π_domain(self.normalise_δ(to_jax_array(self.processed_data["dec"].values)))
+
     @property
     def α(self) -> JaxArray:
-        return to_π_domain(self.normalise_α(to_jax_array(self.processed_data["ra"].values)))
+        """Deprecated: RA scaled into [-π, π]. Use `sky_x` (arcsec)."""
+        _deprecated("α", "sky_x")
+        return self._α()
 
     @property
     def δ(self) -> JaxArray:
-        return to_π_domain(self.normalise_δ(to_jax_array(self.processed_data["dec"].values)))
+        """Deprecated: Dec scaled into [-π, π]. Use `sky_y` (arcsec)."""
+        _deprecated("δ", "sky_y")
+        return self._δ()
 
     def predict_α(self, x: JaxArray) -> JaxArray:
+        """Deprecated: scaled RA back to degrees. Use `sky_to_radec`."""
+        _deprecated("predict_α", "sky_to_radec")
         return self._predict_α(from_π_domain(x))
 
     def predict_δ(self, x: JaxArray) -> JaxArray:
+        """Deprecated: scaled Dec back to degrees. Use `sky_to_radec`."""
+        _deprecated("predict_δ", "sky_to_radec")
         return self._predict_δ(from_π_domain(x))
 
     @property
     def αδ_data(self) -> SpatialDataLVM:
+        """Deprecated: spaxel positions scaled into [-π, π]. Use `sky_data` (arcsec)."""
+        _deprecated("αδ_data", "sky_data")
         return SpatialDataLVM(
-            x=self.α,
-            y=self.δ,
+            x=self._α(),
+            y=self._δ(),
             idx=self.spaxel_idx,
             tile_idx=self.tile_idx,
             ifu_idx=self.ifu_idx,
@@ -181,7 +208,8 @@ class FitData:
 
     def with_sky_origin(self, ra: float, dec: float) -> FitData:
         """The same data, with sky offsets measured from (RA, Dec) in degrees, e.g. to
-        put several datasets on one frame."""
+        put several datasets on one frame. The origin is a choice of frame, not part
+        of the data, so `FitDataBuilder.hash` doesn't include it."""
         return replace(self, sky_origin=(float(ra), float(dec)))
 
     @property
@@ -211,7 +239,7 @@ class FitData:
 
     @property
     def spaxel_idx(self) -> JaxArray:
-        return jnp.arange(len(self.α), dtype=np.int64)
+        return jnp.arange(self.processed_data["ra"].size, dtype=np.int64)
 
     @property
     def tile_idx(self) -> JaxArray:
@@ -234,14 +262,16 @@ class FitData:
         return to_jax_array(
             get_v_barycentric(
                 mjd=self.mjd,
-                α=self.predict_α(self.α),
-                δ=self.predict_δ(self.δ),
+                α=to_jax_array(self.processed_data["ra"].values),
+                δ=to_jax_array(self.processed_data["dec"].values),
                 unit="km/s",
             )
         )
 
     def arcsec_to_model_domain(self, arcsec: float) -> float:
-        """Convert a length scale in arcseconds to the normalised model domain."""
+        """Deprecated: a length in arcsec in the [-π, π] coordinates. With `sky_data`,
+        positions are already in arcsec."""
+        _deprecated("arcsec_to_model_domain", "sky_data (already in arcsec)")
         deg = arcsec / 3600
         probe = 1.0
         return float(
