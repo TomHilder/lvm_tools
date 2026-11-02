@@ -1,4 +1,1 @@
-sphinx>=7.0
-sphinx-book-theme>=1.1
-sphinx-copybutton>=0.5
-myst-parser>=2.0
+mkdocs-material>=9.5
