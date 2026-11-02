@@ -207,12 +207,67 @@ FitData
       :returns: Physical Dec in degrees
       :rtype: jax.Array
 
+   **Sky positions in arcseconds**
+
+   .. py:attribute:: sky_origin
+      :type: tuple[float, float] | None
+
+      The (RA, Dec) in degrees to measure sky offsets from, or None for the
+      centre of the spaxels' bounding box. Set it with ``with_sky_origin``.
+
+   .. py:attribute:: sky_centre
+      :type: tuple[float, float]
+
+      The (RA, Dec) in degrees that ``sky_x`` and ``sky_y`` are measured from.
+
+   .. py:attribute:: sky_x
+      :type: jax.Array
+
+      Each spaxel's offset east of ``sky_centre`` in arcseconds, on the tangent plane.
+
+   .. py:attribute:: sky_y
+      :type: jax.Array
+
+      Each spaxel's offset north of ``sky_centre`` in arcseconds, on the tangent plane.
+
+   .. py:method:: sky_to_radec(x, y)
+
+      Convert offsets in arcseconds (east, north of ``sky_centre``) to RA and Dec.
+
+      :returns: (RA, Dec) in degrees
+      :rtype: tuple[numpy.ndarray, numpy.ndarray]
+
+   .. py:method:: with_sky_origin(ra, dec)
+
+      The same data, with sky offsets measured from (RA, Dec) in degrees.
+
+      :rtype: FitData
+
    **spectracles Integration**
+
+   .. py:attribute:: sky_data
+      :type: spectracles.model.data.SpatialDataLVM
+
+      The spaxel positions as arcsecond offsets (``sky_x``, ``sky_y``), with
+      their spaxel, tile, IFU and fibre indices, for spectracles models.
+
+      Only available when ``spectracles`` is installed.
+
+      **Example**:
+
+      .. code-block:: python
+
+         # Requires: pip install lvm-tools[spectracles]
+         from spectracles import Domain
+
+         spaxels = fit_data.sky_data
+         domain = Domain.from_points(spaxels.x, spaxels.y)
 
    .. py:attribute:: αδ_data
       :type: spectracles.model.data.SpatialDataLVM
 
-      Spatial data structure for use with spectracles models.
+      The same, with the normalised coordinates in [-π, π] (for spectracles
+      fields without a domain).
 
       Only available when ``spectracles`` is installed.
 

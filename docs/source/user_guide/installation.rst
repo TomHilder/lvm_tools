@@ -61,7 +61,8 @@ For use with the `spectracles <https://github.com/TomHilder/spectracles>`_ spect
 spectracles needs Python 3.11 or later, so on Python 3.10 the extra installs
 lvm_tools without it.
 
-This installs the ``spectracles`` package and enables the ``αδ_data`` property on ``FitData`` objects.
+This installs the ``spectracles`` package and enables the ``sky_data`` (and
+``αδ_data``) properties on ``FitData`` objects.
 
 Verifying Installation
 ----------------------

@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING
 
+import astropy.units as u
 import jax.numpy as jnp
 import numpy as np
+from astropy.coordinates import SkyCoord, SkyOffsetFrame
 from jax.numpy import pi as π
 from xarray import DataArray, Dataset
 
@@ -62,6 +64,7 @@ class FitData:
     _predict_α: Callable
     normalise_δ: Callable
     _predict_δ: Callable
+    sky_origin: tuple[float, float] | None = None
 
     @property
     def _flux(self) -> JaxArray:
@@ -111,6 +114,75 @@ class FitData:
             ifu_idx=self.ifu_idx,
             fib_idx=self.fibre_idx,
         )
+
+    # Sky positions as tangent-plane offsets in arcsec, east and north of a centre
+
+    @property
+    def sky_centre(self) -> tuple[float, float]:
+        """The (RA, Dec) in degrees that `sky_x` and `sky_y` are measured from:
+        `sky_origin` if set, otherwise the centre of the spaxels' bounding box."""
+        if self.sky_origin is not None:
+            return float(self.sky_origin[0]), float(self.sky_origin[1])
+        ra = np.asarray(self.processed_data["ra"].values, dtype=float)
+        dec = np.asarray(self.processed_data["dec"].values, dtype=float)
+        # RA relative to one spaxel, so a footprint across RA = 0 isn't split
+        dra = (ra - ra[0] + 180.0) % 360.0 - 180.0
+        ra_c = (ra[0] + 0.5 * (dra.min() + dra.max())) % 360.0
+        return float(ra_c), float(0.5 * (dec.min() + dec.max()))
+
+    def _sky_frame(self) -> SkyOffsetFrame:
+        ra_c, dec_c = self.sky_centre
+        return SkyOffsetFrame(origin=SkyCoord(ra=ra_c * u.deg, dec=dec_c * u.deg))
+
+    def _sky_xy(self) -> tuple[np.ndarray, np.ndarray]:
+        # float64: positions are stored in float32, which resolves only ~60 mas at RA ~ 270°
+        coords = SkyCoord(
+            ra=np.asarray(self.processed_data["ra"].values, dtype=float) * u.deg,
+            dec=np.asarray(self.processed_data["dec"].values, dtype=float) * u.deg,
+        ).transform_to(self._sky_frame())
+        return coords.lon.to_value(u.arcsec), coords.lat.to_value(u.arcsec)
+
+    @property
+    def sky_x(self) -> JaxArray:
+        """Each spaxel's offset east of `sky_centre`, in arcsec (on the tangent plane)."""
+        return jnp.asarray(self._sky_xy()[0])
+
+    @property
+    def sky_y(self) -> JaxArray:
+        """Each spaxel's offset north of `sky_centre`, in arcsec (on the tangent plane)."""
+        return jnp.asarray(self._sky_xy()[1])
+
+    @property
+    def sky_data(self) -> SpatialDataLVM:
+        """The spaxel positions for spectracles, as arcsec offsets from `sky_centre`.
+
+        Length scales of spectracles fields are then in arcsec. Build the
+        field's region with `spectracles.Domain.from_points(d.x, d.y)`.
+        """
+        x, y = self._sky_xy()
+        return SpatialDataLVM(
+            x=jnp.asarray(x),
+            y=jnp.asarray(y),
+            idx=self.spaxel_idx,
+            tile_idx=self.tile_idx,
+            ifu_idx=self.ifu_idx,
+            fib_idx=self.fibre_idx,
+        )
+
+    def sky_to_radec(self, x, y) -> tuple[np.ndarray, np.ndarray]:
+        """(RA, Dec) in degrees of offsets (x east, y north) in arcsec from `sky_centre`,
+        e.g. to plot a map made on a grid of `sky_x`, `sky_y`."""
+        coords = SkyCoord(
+            lon=np.asarray(x, dtype=float) * u.arcsec,
+            lat=np.asarray(y, dtype=float) * u.arcsec,
+            frame=self._sky_frame(),
+        ).icrs
+        return coords.ra.to_value(u.deg), coords.dec.to_value(u.deg)
+
+    def with_sky_origin(self, ra: float, dec: float) -> FitData:
+        """The same data, with sky offsets measured from (RA, Dec) in degrees, e.g. to
+        put several datasets on one frame."""
+        return replace(self, sky_origin=(float(ra), float(dec)))
 
     @property
     def λ(self) -> JaxArray:

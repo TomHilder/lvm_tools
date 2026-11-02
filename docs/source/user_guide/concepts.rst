@@ -179,7 +179,23 @@ The ``predict_α`` and ``predict_δ`` methods convert normalised coordinates bac
 spectracles Integration
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-When ``spectracles`` is installed, the ``αδ_data`` property returns a ``SpatialDataLVM`` object for use with spectrospatial models.
+When ``spectracles`` is installed, ``sky_data`` gives the spaxel positions as a
+``SpatialDataLVM`` for spectrospatial models, in arcseconds: each spaxel's
+offset east (``x``) and north (``y``) of ``sky_centre``, on the tangent plane.
+Length scales of spectracles fields are then in arcseconds too:
+
+.. code-block:: python
+
+   from spectracles import Domain
+
+   spaxels = fit_data.sky_data
+   domain = Domain.from_points(spaxels.x, spaxels.y)
+
+``sky_to_radec(x, y)`` converts offsets back to RA and Dec, and
+``with_sky_origin(ra, dec)`` measures them from a centre of your choice.
+
+The older ``αδ_data`` gives the normalised coordinates in [-π, π] instead
+(used with spectracles fields that have no domain).
 
 Physical Constants
 ------------------

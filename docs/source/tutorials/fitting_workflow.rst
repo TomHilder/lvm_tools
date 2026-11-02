@@ -182,16 +182,25 @@ The arrays are ready for JAX-based model fitting:
 Using with spectracles
 ~~~~~~~~~~~~~~~~~~~~~~
 
-When ``spectracles`` is installed, access the spatial data structure directly:
+When ``spectracles`` is installed, ``sky_data`` gives the spaxel positions in
+arcseconds, east and north of the field's centre. Fields then take length
+scales in arcseconds:
 
 .. code-block:: python
 
-   # Get spectracles-compatible spatial data
-   spatial_data = fit_data.αδ_data
+   from spectracles import Domain, FourierGP, Matern32, Parameter
+   from spectracles.priors import LogNormal
 
-   # Use with spectracles models
-   # from spectracles import SomeSpatialModel
-   # model = SomeSpatialModel(spatial_data, ...)
+   spaxels = fit_data.sky_data
+   domain = Domain.from_points(spaxels.x, spaxels.y)
+   kernel = Matern32(
+       length_scale=Parameter(prior=LogNormal(60.0, 20.0)),  # arcsec
+       variance=Parameter(prior=LogNormal(1.0, 0.5)),
+   )
+   flux = FourierGP(kernel, domain=domain)
+
+   # A map on a grid, back in RA and Dec
+   ra, dec = fit_data.sky_to_radec(grid_x, grid_y)
 
 Reproducibility
 ---------------

@@ -9,6 +9,25 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Unreleased
 ----------
 
+Added
+~~~~~
+
+- Sky positions in arcseconds, for spectracles models with physical length
+  scales: ``FitData.sky_x`` and ``FitData.sky_y`` are each spaxel's offset
+  east and north of a centre, on the tangent plane (astropy's
+  ``SkyOffsetFrame``, so the cos δ factor is exact across the field), and
+  ``FitData.sky_data`` is a ``SpatialDataLVM`` with them.
+- ``FitData.sky_centre``: the (RA, Dec) the offsets are measured from, by
+  default the centre of the spaxels' bounding box (correct across RA = 0).
+  ``FitData.with_sky_origin(ra, dec)`` sets it, e.g. to put several datasets
+  on one frame.
+- ``FitData.sky_to_radec(x, y)``: offsets back to RA and Dec, e.g. for maps on
+  a grid.
+
+The normalised coordinates (``α``, ``δ``, ``αδ_data``,
+``arcsec_to_model_domain``) are unchanged and still work. ``DataConfig`` and
+``FitDataBuilder.hash()`` are unchanged, so existing hashes are too.
+
 [0.1.3] - 2026-10-28
 --------------------
 

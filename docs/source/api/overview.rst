@@ -120,4 +120,7 @@ FitData Properties
    fit_data.mask      # Valid data mask
    fit_data.mjd       # Modified Julian Date
    fit_data.v_bary    # Barycentric velocity
-   fit_data.αδ_data   # spectracles integration
+   fit_data.sky_x     # East offset from sky_centre [arcsec]
+   fit_data.sky_y     # North offset from sky_centre [arcsec]
+   fit_data.sky_data  # spectracles integration (arcsec)
+   fit_data.αδ_data   # spectracles integration (normalised)
