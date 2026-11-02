@@ -26,6 +26,20 @@ Added
 
 - Tests (``tests/``), run in CI on Python 3.10 to 3.14.
 
+Fixed
+~~~~~
+
+- ``F_range``'s upper bound was ignored for single pixels: with
+  ``F_bad_strategy="pixel"`` (and in ``filter_inspector``), flux above the
+  upper bound wasn't excluded. Only fits with a finite upper bound are
+  affected; the default is infinite.
+- ``DataConfig`` now rejects exclusion strategies that filtering doesn't
+  support (``None`` for either setting, ``"spaxel_max"`` for
+  ``nans_strategy``) when it is created, instead of the build failing later.
+- Type annotations of ``LVMTile.get_metadata``, ``LVMTileMeta.tile_id`` (an
+  int or a string) and the normalisation helpers now match what they return;
+  ``get_norm_funcs`` returns a tuple rather than a one-use generator.
+
 Deprecated
 ~~~~~~~~~~
 

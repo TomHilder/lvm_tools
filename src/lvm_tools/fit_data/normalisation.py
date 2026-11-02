@@ -46,5 +46,5 @@ def denormalise(data: ArrayLike, offset: float, scale: float) -> ArrayLike:
     return data * scale + offset
 
 
-def get_norm_funcs(offset: float, scale: float) -> Callable:
-    return (partial(f, offset=offset, scale=scale) for f in (normalise, denormalise))
+def get_norm_funcs(offset: float, scale: float) -> tuple[Callable, Callable]:
+    return tuple(partial(f, offset=offset, scale=scale) for f in (normalise, denormalise))  # type: ignore[return-value]

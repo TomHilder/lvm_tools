@@ -19,7 +19,8 @@ def get_where_nan(arr: DataArray) -> DataArray:
 
 
 def get_where_bad(arr: DataArray, bad_range: tuple[float, float]) -> DataArray:
-    return ~(arr > bad_range[0]) & (arr < bad_range[1])
+    # NaNs compare False on both sides, so they aren't flagged here (nans_strategy handles them)
+    return (arr <= bad_range[0]) | (arr > bad_range[1])
 
 
 def get_where_bad_median(arr: DataArray, bad_range: tuple[float, float]) -> DataArray:

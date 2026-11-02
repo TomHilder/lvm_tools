@@ -7,6 +7,8 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 from lvm_tools.config.validation import (
+    F_BAD_STRATEGIES,
+    NANS_STRATEGIES,
     validate_apply_mask,
     validate_excl_strategy,
     validate_fib_status_incl,
@@ -73,8 +75,8 @@ class DataConfig:
         # validate_range(self.λ_range) # NOTE: moved to clipping.py
         # validate_range(self.α_range)
         # validate_range(self.δ_range)
-        validate_excl_strategy(self.nans_strategy)
-        validate_excl_strategy(self.F_bad_strategy)
+        validate_excl_strategy(self.nans_strategy, NANS_STRATEGIES)
+        validate_excl_strategy(self.F_bad_strategy, F_BAD_STRATEGIES)
         validate_range(self.F_range)
         validate_fib_status_incl(self.fibre_status_include)
         validate_apply_mask(self.apply_mask)

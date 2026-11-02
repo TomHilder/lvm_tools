@@ -73,9 +73,7 @@ def get_normalisations(
         )
 
 
-def get_normalisation_functions(
-    config: DataConfig,
-) -> tuple[tuple[Callable, Callable], tuple[Callable, Callable], tuple[Callable, Callable]]:
+def get_normalisation_functions(config: DataConfig) -> tuple[Callable, ...]:
     return (
         *get_norm_funcs(config.normalise_F_offset, config.normalise_F_scale),
         *get_norm_funcs(0.0, config.normalise_F_scale**-2),

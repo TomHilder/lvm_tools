@@ -40,7 +40,7 @@ def get_science_inds(slitmap: FITS_rec) -> NDArray:
 @dataclass(frozen=True)
 class LVMTileMeta:
     filename: str
-    tile_id: int
+    tile_id: int | str
     exp_num: int
     drp_ver: str
 
@@ -129,7 +129,7 @@ class LVMTile:
         return (flux, i_var, mask, lsf), (wave, ra, dec, fibre_id, fibre_status, ifu_label)
 
     @staticmethod
-    def get_metadata(drp_hdulist: HDUList) -> tuple[int, int, str]:
+    def get_metadata(drp_hdulist: HDUList) -> tuple[int | str, int, str, float]:
         try:
             tile_id = int(drp_hdulist[0].header["OBJECT"].split("=")[1])
         except IndexError:
