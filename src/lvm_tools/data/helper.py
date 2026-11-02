@@ -26,10 +26,18 @@ class _NativeSlicer:
 
 
 def daskify_native(array: ArrayLike, chunks: str | int | tuple) -> da.Array:
-    """Lazily wrap input as a Dask array with native byte order.
+    """Lazily wrap an array as a Dask array with native byte order.
 
     Nothing is read until a chunk is computed, so selecting part of a
-    memory-mapped (e.g. big-endian FITS) array only reads that part.
+    memory-mapped (e.g. big-endian FITS) array only reads and byte-swaps the
+    chunks it touches.
+
+    Args:
+        array: The array to wrap, typically a FITS memory map.
+        chunks: Dask chunk specification, as for `dask.array.from_array`.
+
+    Returns:
+        The Dask array, with the same shape and a native-byte-order dtype.
     """
     view = _NativeSlicer(np.asarray(array))
     meta = np.empty((0,) * view.ndim, dtype=view.dtype)
@@ -38,7 +46,17 @@ def daskify_native(array: ArrayLike, chunks: str | int | tuple) -> da.Array:
 
 
 def numpyfy_native(array: ArrayLike) -> NDArray:
-    """Convert input to a NumPy array with native byte order."""
+    """Convert an array to a NumPy array with native byte order.
+
+    FITS data are big-endian; this byte-swaps them if needed (copying the data), and
+    returns arrays already in native order unchanged.
+
+    Args:
+        array: The array to convert.
+
+    Returns:
+        The NumPy array, in native byte order.
+    """
     arr = np.asarray(array)
     if arr.dtype.byteorder not in ("=", "|"):
         arr = arr.astype(arr.dtype.newbyteorder("="))
@@ -46,6 +64,18 @@ def numpyfy_native(array: ArrayLike) -> NDArray:
 
 
 def summarize_with_units(ds: Dataset) -> str:
+    """A text summary of a dataset, used in the `repr` of `LVMTile` and `LVMTileCollection`.
+
+    It lists the dataset's size and dimensions, then each coordinate and data variable with
+    its dimensions, dtype, size and `units` attribute, and for data variables whether they
+    are Dask arrays (with their chunks) or NumPy arrays.
+
+    Args:
+        ds: The dataset to summarise.
+
+    Returns:
+        The summary, one item per line.
+    """
     lines = [f"    Data size:        {ds.nbytes // 1024**2}MB"]
     lines.append(f"    Dimensions:       {', '.join(f'{k}: {v}' for k, v in ds.sizes.items())}")
 
@@ -75,5 +105,16 @@ def summarize_with_units(ds: Dataset) -> str:
 
 
 def convert_sci_to_int(arr: ArrayLike) -> NDArray:
+    """Convert IFU labels to integers: `"Sci1"` to 0, `"Sci2"` to 1 and `"Sci3"` to 2.
+
+    Args:
+        arr: IFU labels.
+
+    Returns:
+        The integer indices.
+
+    Raises:
+        KeyError: If a label is not one of the three.
+    """
     mapping = {"Sci1": 0, "Sci2": 1, "Sci3": 2}
     return np.array([mapping[item] for item in arr], dtype=int)

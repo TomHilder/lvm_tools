@@ -2,28 +2,38 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 
-def mask_near_points(xgrid, ygrid, xpoints, ypoints, threshold=None):
-    """
-    Generate a boolean mask for a 2D grid, where True means the grid cell is close to at least one (xpoint, ypoint).
+def mask_near_points(xgrid, ygrid, xpoints, ypoints, threshold=None) -> np.ndarray:
+    """A boolean mask of the points of a 2D grid that are close to at least one data point.
 
-    Parameters
-    ----------
-    xgrid : 1D array
-        Grid coordinates along the x-axis (must be monotonically increasing).
-    ygrid : 1D array
-        Grid coordinates along the y-axis (must be monotonically increasing).
-    xpoints : 1D array
-        X-coordinates of the data points.
-    ypoints : 1D array
-        Y-coordinates of the data points.
-    threshold : float, optional
-        Maximum distance from a grid cell center to be considered "near" a data point.
-        If None, uses 1.5 × max(mean grid spacing in x and y).
+    The nearest data point to each grid point is found with a KD-tree. Use it to restrict a
+    model evaluated on a grid to where there are data.
 
-    Returns
-    -------
-    mask : 2D boolean array
-        Mask array with shape (len(ygrid), len(xgrid)), where True means "keep" (near a point).
+    Args:
+        xgrid (numpy.ndarray): Grid coordinates along x (monotonically increasing).
+        ygrid (numpy.ndarray): Grid coordinates along y (monotonically increasing).
+        xpoints (numpy.ndarray): x coordinates of the data points.
+        ypoints (numpy.ndarray): y coordinates of the data points.
+        threshold (float | None): A grid point is kept if its nearest data point is closer
+            than this. If `None`, 1.5 times the larger of the mean grid spacings in x and y.
+
+    Returns:
+        Boolean mask of shape `(len(ygrid), len(xgrid))`, `True` where the grid point is
+            near a data point ("keep").
+
+    Example:
+        ```python
+        import numpy as np
+        from lvm_tools.utils.mask import mask_near_points
+
+        xgrid = np.linspace(0, 10, 100)
+        ygrid = np.linspace(0, 10, 100)
+        xpoints = np.random.uniform(2, 8, 50)
+        ypoints = np.random.uniform(2, 8, 50)
+
+        mask = mask_near_points(xgrid, ygrid, xpoints, ypoints)
+        data = np.ones((len(ygrid), len(xgrid)))
+        masked_data = np.where(mask, data, np.nan)
+        ```
     """
     xx, yy = np.meshgrid(xgrid, ygrid, indexing="xy")
     grid_centers = np.column_stack([xx.ravel(), yy.ravel()])

@@ -7,6 +7,8 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 from lvm_tools.config.validation import (
+    F_BAD_STRATEGIES,
+    NANS_STRATEGIES,
     validate_apply_mask,
     validate_excl_strategy,
     validate_fib_status_incl,
@@ -28,24 +30,59 @@ from lvm_tools.fit_data.processing import get_normalisations, get_αδ_ranges, p
 
 @dataclass(frozen=True)
 class DataConfig:
-    """
-    Configuration object for data processing before fitting.
+    """Settings for preparing LVM data for fitting: what to select, what to exclude, and how
+    to normalise it.
 
-    args:
-        λ_range: Range | Ranges - Wavelength range to include.
-        α_range: Range - Right Ascension range to include.
-        δ_range: Range - Declination range to include.
-        nans_strategy: ExcludeStrategy - Strategy for handling NaN values.
-        F_bad_strategy: ExcludeStrategy - Strategy for handling bad flux values. For "pixel", the flux range is applied to each pixel. For "spaxel", the flux range is applied to the median of all pixels in a spaxel.
-        F_range: Range - Flux range to include.
-        fibre_status_include: tuple[FibreStatus] - Fibre status values to include.
-        apply_mask: bool - Whether to apply a mask to the data.
-        normalise_F_strategy: NormaliseStrategy - Strategy for normalising flux data.
-        normalise_F_offset: float - Offset for normalising flux data.
-        normalise_F_scale: float - Scale for normalising flux data.
-        normalise_αδ_strategy: NormaliseStrategy - Strategy for normalising α and δ data.
-        normalise_αδ_offset: float - Offset for normalising α and δ data.
-        normalise_αδ_scale: float - Scale for normalising α and δ data.
+    A `DataConfig` is immutable. Usually it is made with `DataConfig.from_tiles`, which works
+    out the RA/Dec ranges and the normalisation offsets and scales from the data, and then
+    passed with the tiles to `FitDataBuilder`.
+
+    The strategies, `F_range`, `fibre_status_include`, `apply_mask` and the normalisation
+    offsets and scales are checked when the config is created, raising `ValueError` (or
+    `TypeError` for a value of the wrong type). The wavelength, RA and Dec ranges are
+    checked when the data are clipped.
+
+    Attributes:
+        λ_range: Wavelength range(s) to keep, in Angstrom. A single range `(min, max)`, or
+            several ranges `((min1, max1), (min2, max2), ...)` in increasing order and not
+            overlapping, whose selections are joined along wavelength. Each range needs
+            `min < max`. Default `(-inf, inf)`.
+        α_range: Right ascension range `(min, max)` to keep, in degrees. Default
+            `(-inf, inf)`.
+        δ_range: Declination range `(min, max)` to keep, in degrees. Default `(-inf, inf)`.
+        nans_strategy: How to exclude NaN fluxes. `"pixel"` leaves them as individual NaN
+            pixels; `"spaxel"` excludes every spaxel with any NaN flux. Default `"pixel"`.
+        F_bad_strategy: How to exclude bad fluxes using `F_range`. `"pixel"` excludes each
+            pixel whose flux is at or below `F_range[0]` or above `F_range[1]`; `"spaxel"`
+            excludes spaxels whose median flux over wavelength is
+            outside `F_range`; `"spaxel_max"` excludes spaxels whose maximum flux is
+            outside `F_range`. Both spaxel strategies also exclude spaxels whose fluxes are
+            all NaN. Default `"spaxel"`.
+        F_range: Range `(min, max)` of acceptable flux, in erg cm⁻² s⁻¹ Å⁻¹, used by
+            `F_bad_strategy`. Default `(BAD_FLUX_THRESHOLD, inf)`, i.e. `(-1e-14, inf)`.
+        fibre_status_include: Fibre status values to keep (each 0, 1, 2 or 3); spaxels
+            with any other status are excluded. Default `(0,)`.
+        apply_mask: Whether to exclude the pixels flagged in the DRP mask. Default `True`.
+        normalise_F_strategy: How `from_tiles` computes the flux normalisation (see
+            `NormaliseStrategy` and `calc_normalisation`). Default `"max only"`.
+        normalise_F_offset: Offset of the flux normalisation; the normalised flux is
+            `(flux - offset) / scale`. Must be a finite float. Default `0.0`.
+        normalise_F_scale: Scale of the flux normalisation. Must be a positive, finite
+            float. The inverse variance is multiplied by `scale**2`. Default `1.0`.
+        normalise_αδ_strategy: How `from_tiles` computes the RA and Dec normalisations
+            (same options as `normalise_F_strategy`). Default `"padded"`.
+        normalise_α_offset: Offset of the RA normalisation, in degrees. Default `0.0`.
+        normalise_α_scale: Scale of the RA normalisation, in degrees. Default `1.0`.
+        normalise_δ_offset: Offset of the Dec normalisation, in degrees. Default `0.0`.
+        normalise_δ_scale: Scale of the Dec normalisation, in degrees. Default `1.0`.
+
+    Example:
+        ```python
+        from lvm_tools import DataConfig
+
+        config = DataConfig.from_tiles(tile, λ_range=(6500.0, 6800.0))
+        config = DataConfig.from_dict(config.to_dict() | {"apply_mask": False})
+        ```
     """
 
     # Data clipping ranges (aka choose data of interest)
@@ -73,8 +110,8 @@ class DataConfig:
         # validate_range(self.λ_range) # NOTE: moved to clipping.py
         # validate_range(self.α_range)
         # validate_range(self.δ_range)
-        validate_excl_strategy(self.nans_strategy)
-        validate_excl_strategy(self.F_bad_strategy)
+        validate_excl_strategy(self.nans_strategy, NANS_STRATEGIES)
+        validate_excl_strategy(self.F_bad_strategy, F_BAD_STRATEGIES)
         validate_range(self.F_range)
         validate_fib_status_incl(self.fibre_status_include)
         validate_apply_mask(self.apply_mask)
@@ -90,6 +127,11 @@ class DataConfig:
 
     @staticmethod
     def default() -> DataConfig:
+        """A config with every setting at its default.
+
+        Returns:
+            The default config, the same as `DataConfig()`.
+        """
         return DataConfig()
 
     @staticmethod
@@ -98,6 +140,41 @@ class DataConfig:
         λ_range: Range | Ranges = (-np.inf, np.inf),
         **overrides,
     ) -> DataConfig:
+        """A config with the RA/Dec ranges and normalisations computed from the data.
+
+        The steps are:
+
+        1. Set `α_range` and `δ_range` to a square around all the spaxels of `tiles` (see
+           `get_αδ_ranges`).
+        2. Clip and filter the data with that config, `λ_range` and any `overrides`.
+        3. Compute the flux, RA and Dec normalisations of what is left, using the
+           normalisation strategies. RA and Dec get the larger of their two scales, so the
+           normalised coordinates keep the sky's aspect ratio.
+        4. Apply `overrides` again, so they take precedence over the computed values.
+
+        Args:
+            tiles: The data to configure for.
+            λ_range: Wavelength range(s) to keep, in Angstrom (see the `λ_range` attribute).
+                It is not computed from the data.
+            **overrides (Any): Any other attributes, by name, e.g. `nans_strategy="spaxel"`.
+
+        Returns:
+            The config.
+
+        Raises:
+            ValueError: If an override is not an attribute of `DataConfig`, if a setting is
+                invalid, or if no data are left after clipping or filtering.
+            TypeError: If a setting has the wrong type.
+
+        Example:
+            ```python
+            config = DataConfig.from_tiles(
+                tile,
+                λ_range=(6500.0, 6800.0),
+                normalise_F_strategy="98 only",
+            )
+            ```
+        """
         # λ_range cannot be set automatically
         α_range, δ_range = get_αδ_ranges(tiles)
 
@@ -133,11 +210,29 @@ class DataConfig:
 
     @staticmethod
     def from_dict(config: dict) -> DataConfig:
+        """A config from a dictionary of all its attributes, as made by `to_dict`.
+
+        Args:
+            config: Every attribute of `DataConfig`, by name.
+
+        Returns:
+            The config.
+
+        Raises:
+            ValueError: If `config` doesn't have exactly as many entries as `DataConfig` has
+                attributes, or if a setting is invalid.
+            TypeError: If a key is not an attribute name, or a value has the wrong type.
+        """
         if len(config) != len(DataConfig.default().to_dict()):
             raise ValueError("config has the wrong number of entries.")
         return DataConfig(**config)
 
     def to_dict(self) -> dict:
+        """The config as a dictionary of its attributes, by name.
+
+        Returns:
+            The attributes, suitable for `from_dict`.
+        """
         return asdict(self)
 
     def __repr__(self) -> str:
