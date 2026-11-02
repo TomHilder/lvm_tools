@@ -24,7 +24,7 @@ Added
 - ``FitData.sky_to_radec(x, y)``: offsets back to RA and Dec, e.g. for maps on
   a grid.
 
-- Tests (``tests/``), run in CI on Python 3.11 to 3.14.
+- Tests (``tests/``), run in CI on Python 3.10 to 3.14.
 
 Deprecated
 ~~~~~~~~~~
