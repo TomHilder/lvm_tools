@@ -97,7 +97,7 @@ def denormalise(data: ArrayLike, offset: float, scale: float) -> ArrayLike:
     return data * scale + offset
 
 
-def get_norm_funcs(offset: float, scale: float) -> Callable:
+def get_norm_funcs(offset: float, scale: float) -> tuple[Callable, Callable]:
     """`normalise` and `denormalise` with a fixed offset and scale.
 
     Args:
@@ -105,7 +105,7 @@ def get_norm_funcs(offset: float, scale: float) -> Callable:
         scale: The scale.
 
     Returns:
-        A generator of the two functions, `normalise` then `denormalise`, each taking
-            only the data. Unpack it, e.g. `norm, denorm = get_norm_funcs(0.0, 2.0)`.
+        The two functions, `normalise` then `denormalise`, each taking only the data, e.g.
+            `norm, denorm = get_norm_funcs(0.0, 2.0)`.
     """
-    return (partial(f, offset=offset, scale=scale) for f in (normalise, denormalise))
+    return tuple(partial(f, offset=offset, scale=scale) for f in (normalise, denormalise))  # type: ignore[return-value]

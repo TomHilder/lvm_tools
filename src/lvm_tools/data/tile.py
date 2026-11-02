@@ -66,7 +66,7 @@ class LVMTileMeta:
     """
 
     filename: str
-    tile_id: int
+    tile_id: int | str
     exp_num: int
     drp_ver: str
 
@@ -222,7 +222,7 @@ class LVMTile:
         return (flux, i_var, mask, lsf), (wave, ra, dec, fibre_id, fibre_status, ifu_label)
 
     @staticmethod
-    def get_metadata(drp_hdulist: HDUList) -> tuple[int, int, str]:
+    def get_metadata(drp_hdulist: HDUList) -> tuple[int | str, int, str, float]:
         """Read the metadata of an exposure from the primary header of an open DRP file.
 
         Args:

@@ -129,9 +129,7 @@ def get_normalisations(
         )
 
 
-def get_normalisation_functions(
-    config: DataConfig,
-) -> tuple[tuple[Callable, Callable], tuple[Callable, Callable], tuple[Callable, Callable]]:
+def get_normalisation_functions(config: DataConfig) -> tuple[Callable, ...]:
     """The normalisation functions given by a config's offsets and scales.
 
     The inverse variance is normalised consistently with the flux: it has offset 0 and

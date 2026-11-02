@@ -7,6 +7,8 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 from lvm_tools.config.validation import (
+    F_BAD_STRATEGIES,
+    NANS_STRATEGIES,
     validate_apply_mask,
     validate_excl_strategy,
     validate_fib_status_incl,
@@ -49,16 +51,13 @@ class DataConfig:
             `(-inf, inf)`.
         δ_range: Declination range `(min, max)` to keep, in degrees. Default `(-inf, inf)`.
         nans_strategy: How to exclude NaN fluxes. `"pixel"` leaves them as individual NaN
-            pixels; `"spaxel"` excludes every spaxel with any NaN flux. The other
-            `ExcludeStrategy` values pass validation but raise `ValueError` when the data
-            are filtered. Default `"pixel"`.
+            pixels; `"spaxel"` excludes every spaxel with any NaN flux. Default `"pixel"`.
         F_bad_strategy: How to exclude bad fluxes using `F_range`. `"pixel"` excludes each
-            pixel whose flux is at or below `F_range[0]` (the upper bound is not applied
-            per pixel); `"spaxel"` excludes spaxels whose median flux over wavelength is
+            pixel whose flux is at or below `F_range[0]` or above `F_range[1]`; `"spaxel"`
+            excludes spaxels whose median flux over wavelength is
             outside `F_range`; `"spaxel_max"` excludes spaxels whose maximum flux is
             outside `F_range`. Both spaxel strategies also exclude spaxels whose fluxes are
-            all NaN. `None` passes validation but raises `ValueError` when the data are
-            filtered. Default `"spaxel"`.
+            all NaN. Default `"spaxel"`.
         F_range: Range `(min, max)` of acceptable flux, in erg cm⁻² s⁻¹ Å⁻¹, used by
             `F_bad_strategy`. Default `(BAD_FLUX_THRESHOLD, inf)`, i.e. `(-1e-14, inf)`.
         fibre_status_include: Fibre status values to keep (each 0, 1, 2 or 3); spaxels
@@ -111,8 +110,8 @@ class DataConfig:
         # validate_range(self.λ_range) # NOTE: moved to clipping.py
         # validate_range(self.α_range)
         # validate_range(self.δ_range)
-        validate_excl_strategy(self.nans_strategy)
-        validate_excl_strategy(self.F_bad_strategy)
+        validate_excl_strategy(self.nans_strategy, NANS_STRATEGIES)
+        validate_excl_strategy(self.F_bad_strategy, F_BAD_STRATEGIES)
         validate_range(self.F_range)
         validate_fib_status_incl(self.fibre_status_include)
         validate_apply_mask(self.apply_mask)

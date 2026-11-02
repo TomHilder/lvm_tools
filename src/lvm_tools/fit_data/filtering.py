@@ -10,10 +10,9 @@ BAD_FLUX_THRESHOLD = -0.1e-13
 """Default lower bound of acceptable flux (`DataConfig.F_range`), -1e-14 erg cm⁻² s⁻¹ Å⁻¹."""
 
 
-# None stays inside the Literal: validation checks values against get_args(ExcludeStrategy)
-ExcludeStrategy = Literal[None, "pixel", "spaxel", "spaxel_max"]  # noqa: PYI061
-"""How to exclude bad data: `None`, `"pixel"`, `"spaxel"` or `"spaxel_max"`. See
-`DataConfig.nans_strategy` and `DataConfig.F_bad_strategy` for which each accepts."""
+ExcludeStrategy = Literal["pixel", "spaxel", "spaxel_max"]
+"""How to exclude bad data: `"pixel"`, `"spaxel"` or `"spaxel_max"`. `nans_strategy` accepts
+`"pixel"` and `"spaxel"`; `F_bad_strategy` all three (see `DataConfig`)."""
 FibreStatus = Literal[0, 1, 2, 3]  # I have no idea what these mean, but they're in the data
 """A fibre status value from the DRP slitmap: 0, 1, 2 or 3."""
 
@@ -31,10 +30,10 @@ def get_where_nan(arr: DataArray) -> DataArray:
 
 
 def get_where_bad(arr: DataArray, bad_range: tuple[float, float]) -> DataArray:
-    """Where pixels are at or below the lower bound of the acceptable range.
+    """Where pixels are outside the acceptable range.
 
-    A pixel is flagged when its value is `<= bad_range[0]` (and `< bad_range[1]`). Values
-    above `bad_range[1]` and NaN values are not flagged.
+    A pixel is flagged when its value is `<= bad_range[0]` or `> bad_range[1]`. NaN values
+    are not flagged (`nans_strategy` handles them).
 
     Args:
         arr: The values, e.g. the flux.
@@ -43,7 +42,8 @@ def get_where_bad(arr: DataArray, bad_range: tuple[float, float]) -> DataArray:
     Returns:
         A boolean array of the same shape, `True` where the pixel is bad.
     """
-    return ~(arr > bad_range[0]) & (arr < bad_range[1])
+    # NaNs compare False on both sides, so they aren't flagged here (nans_strategy handles them)
+    return (arr <= bad_range[0]) | (arr > bad_range[1])
 
 
 def get_where_bad_median(arr: DataArray, bad_range: tuple[float, float]) -> DataArray:

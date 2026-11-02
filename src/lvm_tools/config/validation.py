@@ -26,17 +26,28 @@ def validate_range(x_range: Range) -> None:
         raise ValueError("Requested data range restriction has max < min.")
 
 
-def validate_excl_strategy(strategy: ExcludeStrategy) -> None:
-    """Check that a value is one of the `ExcludeStrategy` options.
+NANS_STRATEGIES = ("pixel", "spaxel")
+"""The values `DataConfig.nans_strategy` accepts."""
+
+F_BAD_STRATEGIES = ("pixel", "spaxel", "spaxel_max")
+"""The values `DataConfig.F_bad_strategy` accepts."""
+
+
+def validate_excl_strategy(
+    strategy: ExcludeStrategy, allowed: tuple[str, ...] = F_BAD_STRATEGIES
+) -> None:
+    """Check that an exclusion strategy is one of the allowed values.
 
     Args:
         strategy: The strategy.
+        allowed: The values accepted: `NANS_STRATEGIES` for `nans_strategy`,
+            `F_BAD_STRATEGIES` (the default) for `F_bad_strategy`.
 
     Raises:
-        ValueError: If it is not an option.
+        ValueError: If it is not one of them.
     """
-    if strategy not in get_args(ExcludeStrategy):
-        raise ValueError(f"Unknown exclusion strategy: {strategy}")
+    if strategy not in allowed:
+        raise ValueError(f"Unknown exclusion strategy: {strategy!r}; expected one of {allowed}.")
 
 
 def validate_norm_strategy(strategy: NormaliseStrategy) -> None:
