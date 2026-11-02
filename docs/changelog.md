@@ -12,7 +12,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 - `FitData.sky_centre`: the (RA, Dec) the offsets are measured from, by default the centre of the spaxels' bounding box (correct across RA = 0). `FitData.with_sky_origin(ra, dec)` sets it, e.g. to put several datasets on one frame.
 - `FitData.sky_to_radec(x, y)`: offsets back to RA and Dec, e.g. for maps on a grid.
 
-The normalised coordinates (`α`, `δ`, `αδ_data`, `arcsec_to_model_domain`) are unchanged and still work. `DataConfig` and `FitDataBuilder.hash()` are unchanged, so existing hashes are too.
+- Tests (`tests/`), run in CI on Python 3.10 to 3.14.
+
+### Deprecated
+
+- The coordinates scaled into [-π, π]: `FitData.α`, `FitData.δ`, `FitData.αδ_data`, `FitData.predict_α`, `FitData.predict_δ` and `FitData.arcsec_to_model_domain` warn (`DeprecationWarning`) and will be removed in a future release. Use `sky_x`, `sky_y`, `sky_data` and `sky_to_radec`, with a spectracles `Domain` for physical length scales. They still return the same values.
+
+`DataConfig` and `FitDataBuilder.hash()` are unchanged, so existing hashes are too. The sky origin (`with_sky_origin`) is a choice of frame, not part of the data, and isn't included in the hash.
 
 ### Changed
 
