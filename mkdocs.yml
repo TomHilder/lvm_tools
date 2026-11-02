@@ -56,6 +56,7 @@ nav:
     - api/processing.md
     - api/utils.md
   - Development:
+    - roadmap.md
     - changelog.md
     - contributing.md
 
