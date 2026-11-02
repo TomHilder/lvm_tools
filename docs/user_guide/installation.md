@@ -61,13 +61,14 @@ To verify the installation, open a Python interpreter and import the package:
 
 ``` python
 import lvm_tools
+
 print(lvm_tools.__all__)
 ```
 
 This should output:
 
-``` python
-['LVMTile', 'LVMTileCollection', 'DataConfig', 'FitDataBuilder']
+```text
+['DataConfig', 'FitDataBuilder', 'LVMTile', 'LVMTileCollection']
 ```
 
 ## Troubleshooting

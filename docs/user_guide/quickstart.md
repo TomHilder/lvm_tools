@@ -27,10 +27,7 @@ For analyses spanning multiple observations, combine tiles into a collection:
 from lvm_tools import LVMTile, LVMTileCollection
 
 # Load multiple tiles
-tiles = [
-    LVMTile.from_file(Path(f"/path/to/tile_{i}.fits"))
-    for i in range(3)
-]
+tiles = [LVMTile.from_file(Path(f"/path/to/tile_{i}.fits")) for i in range(3)]
 
 # Combine into a collection
 collection = LVMTileCollection.from_tiles(tiles)
@@ -70,10 +67,10 @@ builder = FitDataBuilder(tiles=tile, config=config)
 fit_data = builder.build()
 
 # Access normalised arrays (JAX arrays)
-flux = fit_data.flux           # Shape: (n_spaxels, n_wavelengths)
-wavelength = fit_data.λ        # Shape: (n_wavelengths,)
-alpha = fit_data.α             # Right ascension (normalised)
-delta = fit_data.δ             # Declination (normalised)
+flux = fit_data.flux  # Shape: (n_spaxels, n_wavelengths)
+wavelength = fit_data.λ  # Shape: (n_wavelengths,)
+alpha = fit_data.α  # Right ascension (normalised)
+delta = fit_data.δ  # Declination (normalised)
 ```
 
 ## Reproducibility
@@ -101,7 +98,7 @@ tile = LVMTile.from_file(Path("/path/to/observation.fits"))
 config = DataConfig.from_tiles(
     tile,
     λ_range=(4800.0, 5100.0),  # Select OIII region
-    nans_strategy="pixel",     # Exclude individual NaN pixels
+    nans_strategy="pixel",  # Exclude individual NaN pixels
     normalise_F_strategy="max only",  # Normalise by maximum flux
 )
 

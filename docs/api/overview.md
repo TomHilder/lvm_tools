@@ -33,42 +33,49 @@ lvm_tools/
 
 The following classes and functions are exported from the top-level `lvm_tools` namespace:
 
-``` python
+```python
 from lvm_tools import (
-    LVMTile,           # Single observation container
-    LVMTileCollection, # Multi-observation container
-    DataConfig,        # Processing configuration
-    FitDataBuilder,    # Fit data constructor
+    LVMTile,  # Single observation container
+    LVMTileCollection,  # Multi-observation container
+    DataConfig,  # Processing configuration
+    FitDataBuilder,  # Fit data constructor
 )
 ```
 
 ## API Reference Pages
 
+- [Data Loading](tile.md): `LVMTile`, `LVMTileMeta`, `LVMTileCollection`, units and
+  constants.
+- [Configuration](config.md): `DataConfig`, its type aliases and validation.
+- [Fit Data](fit_data.md): `FitDataBuilder` and `FitData`.
+- [Processing](processing.md): clipping, filtering and normalisation functions.
+- [Utilities](utils.md): barycentric corrections, spatial masking and helpers.
+
 ## Quick Reference
 
 ### LVMTile
 
-``` python
+```python
 from lvm_tools import LVMTile
 
 tile = LVMTile.from_file(path)
-tile.data       # xarray Dataset
-tile.meta       # LVMTileMeta
+tile.data  # xarray Dataset
+tile.meta  # LVMTileMeta
 ```
 
 ### LVMTileCollection
 
-``` python
+```python
 from lvm_tools import LVMTileCollection
 
 collection = LVMTileCollection.from_tiles([tile1, tile2])
 collection.data  # Combined Dataset
-collection.meta  # Dict of LVMTileMeta
+collection.meta  # Dict of LVMTileMeta, keyed by exposure number
 ```
 
 ### DataConfig
 
-``` python
+```python
 from lvm_tools import DataConfig
 
 config = DataConfig.from_tiles(tiles, λ_range=(...))
@@ -79,7 +86,7 @@ DataConfig.from_dict(d)
 
 ### FitDataBuilder
 
-``` python
+```python
 from lvm_tools import FitDataBuilder
 
 builder = FitDataBuilder(tiles, config)
@@ -89,19 +96,25 @@ hash_value = builder.hash()
 
 ### FitData Properties
 
-``` python
-fit_data.flux      # Normalised flux (JAX array)
-fit_data.i_var     # Inverse variance
-fit_data.u_flux    # Uncertainty
-fit_data.λ         # Wavelength
-fit_data.α         # RA (normalised)
-fit_data.δ         # Dec (normalised)
-fit_data.lsf_σ     # Line spread function
-fit_data.mask      # Valid data mask
-fit_data.mjd       # Modified Julian Date
-fit_data.v_bary    # Barycentric velocity
-fit_data.sky_x     # East offset from sky_centre [arcsec]
-fit_data.sky_y     # North offset from sky_centre [arcsec]
-fit_data.sky_data  # spectracles integration (arcsec)
-fit_data.αδ_data   # spectracles integration (normalised)
+```python
+# Spectra, shape (n_wavelengths, n_spaxels)
+fit_data.flux  # Normalised flux (JAX array)
+fit_data.i_var  # Normalised inverse variance
+fit_data.u_flux  # Normalised uncertainty
+fit_data.mask  # True where the pixel has data
+fit_data.lsf_σ  # Line spread function sigma [Angstrom]
+fit_data.λ  # Wavelength [Angstrom], shape (n_wavelengths,)
+
+# Per spaxel, shape (n_spaxels,)
+fit_data.sky_x  # East offset from sky_centre [arcsec]
+fit_data.sky_y  # North offset from sky_centre [arcsec]
+fit_data.mjd  # Modified Julian Date
+fit_data.v_bary  # Barycentric velocity correction [km/s]
+
+fit_data.sky_data  # Positions for spectracles models [arcsec]
+fit_data.sky_to_radec(x, y)  # Offsets [arcsec] back to RA, Dec [deg]
 ```
+
+The coordinates scaled into [-π, π] (`fit_data.α`, `fit_data.δ`, `fit_data.αδ_data`,
+`fit_data.predict_α`, `fit_data.predict_δ`, `fit_data.arcsec_to_model_domain`) are
+deprecated; see [Fit Data](fit_data.md#deprecated-coordinates).

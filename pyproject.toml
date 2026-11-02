@@ -42,8 +42,8 @@ line-length = 99 # Sorry PEP8 I'm a rebel
 
 [dependency-groups]
 dev = [
-    "myst-parser>=4.0.1",
     "pytest>=8.0",
     "ruff>=0.17.2",
     "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.26",
 ]

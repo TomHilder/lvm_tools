@@ -218,7 +218,7 @@ import gc
 # Process in batches
 batch_size = 100
 for i in range(0, len(paths), batch_size):
-    batch_paths = paths[i:i+batch_size]
+    batch_paths = paths[i : i + batch_size]
     batch_tiles = [LVMTile.from_file(p) for p in batch_paths]
     batch_collection = LVMTileCollection.from_tiles(batch_tiles)
 

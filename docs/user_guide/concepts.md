@@ -56,16 +56,16 @@ tile = LVMTile.from_file(path)
 ds = tile.data
 
 # Data variables (Dask arrays)
-ds["flux"]      # Shape: (1, n_spaxels, n_wavelengths)
-ds["i_var"]     # Inverse variance
-ds["lsf_sigma"] # Line spread function (sigma, not FWHM)
-ds["mask"]      # DRP quality mask
+ds["flux"]  # Shape: (1, n_spaxels, n_wavelengths)
+ds["i_var"]  # Inverse variance
+ds["lsf_sigma"]  # Line spread function (sigma, not FWHM)
+ds["mask"]  # DRP quality mask
 
 # Coordinates
-ds["wavelength"]     # Wavelength grid (Angstroms)
-ds["ra"]             # Right ascension (degrees)
-ds["dec"]            # Declination (degrees)
-ds["fibre_status"]   # Fibre quality flags
+ds["wavelength"]  # Wavelength grid (Angstroms)
+ds["ra"]  # Right ascension (degrees)
+ds["dec"]  # Declination (degrees)
+ds["fibre_status"]  # Fibre quality flags
 ```
 
 `LVMTileCollection` concatenates multiple tiles along the `tile` dimension, enabling multi-exposure analyses.

@@ -53,8 +53,8 @@ config = DataConfig.from_tiles(
 fit_data = FitDataBuilder(tile, config).build()
 
 # Access normalised arrays for model fitting
-flux = fit_data.flux        # Normalised flux (JAX array)
-wavelength = fit_data.λ     # Wavelength grid (JAX array)
+flux = fit_data.flux  # Normalised flux (JAX array)
+wavelength = fit_data.λ  # Wavelength grid (JAX array)
 ```
 
 ## Contents

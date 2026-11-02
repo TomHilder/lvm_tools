@@ -69,8 +69,7 @@ fig, ax = plt.subplots(figsize=(8, 8))
 colors = {"Sci1": "C0", "Sci2": "C1", "Sci3": "C2"}
 for ifu in unique_ifus:
     mask = ifu_labels == ifu
-    ax.scatter(ra[mask], dec[mask], c=colors.get(ifu, "gray"),
-               label=ifu, s=15, alpha=0.7)
+    ax.scatter(ra[mask], dec[mask], c=colors.get(ifu, "gray"), label=ifu, s=15, alpha=0.7)
 
 ax.set_xlabel("Right Ascension (deg)")
 ax.set_ylabel("Declination (deg)")
@@ -98,10 +97,14 @@ status_labels = {0: "Good", 1: "Warning", 2: "Bad", 3: "Unknown"}
 
 for status in unique_status:
     mask = fibre_status == status
-    ax.scatter(ra[mask], dec[mask],
-               c=status_colors.get(status, "black"),
-               label=f"Status {status} ({status_labels.get(status, 'Unknown')})",
-               s=15, alpha=0.7)
+    ax.scatter(
+        ra[mask],
+        dec[mask],
+        c=status_colors.get(status, "black"),
+        label=f"Status {status} ({status_labels.get(status, 'Unknown')})",
+        s=15,
+        alpha=0.7,
+    )
 
 ax.set_xlabel("Right Ascension (deg)")
 ax.set_ylabel("Declination (deg)")
@@ -139,8 +142,9 @@ spaxel_dec = float(ds["dec"].isel(tile=0, spaxel=spaxel_idx))
 fig, ax = plt.subplots(figsize=(12, 4))
 
 ax.plot(wavelength, flux, "k-", lw=0.5, label="Flux")
-ax.fill_between(wavelength, flux - sigma, flux + sigma,
-                alpha=0.3, color="C0", label=r"$\pm 1\sigma$")
+ax.fill_between(
+    wavelength, flux - sigma, flux + sigma, alpha=0.3, color="C0", label=r"$\pm 1\sigma$"
+)
 
 ax.set_xlabel(r"Wavelength ($\mathrm{\AA}$)")
 ax.set_ylabel(r"Flux (erg cm$^{-2}$ s$^{-1}$ $\mathrm{\AA}^{-1}$)")
@@ -173,10 +177,9 @@ for ax, (name, (wl_min, wl_max)) in zip(axes, regions.items()):
     sigma_subset = sigma[mask]
 
     ax.plot(wl_subset, flux_subset, "k-", lw=0.8)
-    ax.fill_between(wl_subset,
-                    flux_subset - sigma_subset,
-                    flux_subset + sigma_subset,
-                    alpha=0.3, color="C0")
+    ax.fill_between(
+        wl_subset, flux_subset - sigma_subset, flux_subset + sigma_subset, alpha=0.3, color="C0"
+    )
 
     ax.set_xlabel(r"Wavelength ($\mathrm{\AA}$)")
     ax.set_ylabel(r"Flux")
@@ -203,8 +206,7 @@ for i, idx in enumerate(spaxel_indices):
 
     # Offset for visibility
     offset = i * 1e-15
-    ax.plot(wavelength, flux_i + offset, lw=0.5,
-            label=f"({ra_i:.3f}, {dec_i:.3f})")
+    ax.plot(wavelength, flux_i + offset, lw=0.5, label=f"({ra_i:.3f}, {dec_i:.3f})")
 
 ax.set_xlabel(r"Wavelength ($\mathrm{\AA}$)")
 ax.set_ylabel(r"Flux + offset")
@@ -232,9 +234,15 @@ ha_flux = np.nansum(flux_cube[:, wl_mask], axis=1)
 # Plot spatial map
 fig, ax = plt.subplots(figsize=(8, 8))
 
-scatter = ax.scatter(ra, dec, c=ha_flux, cmap="plasma", s=20,
-                     vmin=np.nanpercentile(ha_flux, 5),
-                     vmax=np.nanpercentile(ha_flux, 95))
+scatter = ax.scatter(
+    ra,
+    dec,
+    c=ha_flux,
+    cmap="plasma",
+    s=20,
+    vmin=np.nanpercentile(ha_flux, 5),
+    vmax=np.nanpercentile(ha_flux, 95),
+)
 
 ax.set_xlabel("Right Ascension (deg)")
 ax.set_ylabel("Declination (deg)")
@@ -272,16 +280,28 @@ ha_flux_cont_sub = ha_flux - continuum * np.sum(wl_mask)
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 # Raw H-alpha flux
-sc1 = axes[0].scatter(ra, dec, c=ha_flux, cmap="plasma", s=20,
-                      vmin=np.nanpercentile(ha_flux, 5),
-                      vmax=np.nanpercentile(ha_flux, 95))
+sc1 = axes[0].scatter(
+    ra,
+    dec,
+    c=ha_flux,
+    cmap="plasma",
+    s=20,
+    vmin=np.nanpercentile(ha_flux, 5),
+    vmax=np.nanpercentile(ha_flux, 95),
+)
 axes[0].set_title(r"H$\alpha$ (raw)")
 plt.colorbar(sc1, ax=axes[0])
 
 # Continuum-subtracted
-sc2 = axes[1].scatter(ra, dec, c=ha_flux_cont_sub, cmap="RdBu_r", s=20,
-                      vmin=np.nanpercentile(ha_flux_cont_sub, 5),
-                      vmax=np.nanpercentile(ha_flux_cont_sub, 95))
+sc2 = axes[1].scatter(
+    ra,
+    dec,
+    c=ha_flux_cont_sub,
+    cmap="RdBu_r",
+    s=20,
+    vmin=np.nanpercentile(ha_flux_cont_sub, 5),
+    vmax=np.nanpercentile(ha_flux_cont_sub, 95),
+)
 axes[1].set_title(r"H$\alpha$ (continuum subtracted)")
 plt.colorbar(sc2, ax=axes[1])
 
@@ -310,8 +330,9 @@ median_snr = np.nanmedian(snr_cube, axis=1)
 
 fig, ax = plt.subplots(figsize=(8, 8))
 
-scatter = ax.scatter(ra, dec, c=median_snr, cmap="viridis", s=20,
-                     vmin=0, vmax=np.nanpercentile(median_snr, 95))
+scatter = ax.scatter(
+    ra, dec, c=median_snr, cmap="viridis", s=20, vmin=0, vmax=np.nanpercentile(median_snr, 95)
+)
 
 ax.set_xlabel("Right Ascension (deg)")
 ax.set_ylabel("Declination (deg)")
@@ -385,15 +406,15 @@ print(f"Exposure:          {tile.meta.exp_num}")
 print(f"DRP Version:       {tile.meta.drp_ver}")
 print("-" * 50)
 print(f"Spaxels:           {n_spaxels}")
-print(f"Good fibres:       {n_good_fibres} ({100*n_good_fibres/n_spaxels:.1f}%)")
+print(f"Good fibres:       {n_good_fibres} ({100 * n_good_fibres / n_spaxels:.1f}%)")
 print(f"Wavelength points: {n_wavelengths}")
 print(f"Wavelength range:  {wl_min:.1f} - {wl_max:.1f} Å")
 print(f"Wavelength step:   {wl_step:.3f} Å")
 print("-" * 50)
-print(f"RA range:          {ra.min():.4f} - {ra.max():.4f} deg ({ra_range*60:.2f} arcmin)")
-print(f"Dec range:         {dec.min():.4f} - {dec.max():.4f} deg ({dec_range*60:.2f} arcmin)")
+print(f"RA range:          {ra.min():.4f} - {ra.max():.4f} deg ({ra_range * 60:.2f} arcmin)")
+print(f"Dec range:         {dec.min():.4f} - {dec.max():.4f} deg ({dec_range * 60:.2f} arcmin)")
 print("-" * 50)
-print(f"Valid data:        {100*valid_fraction:.1f}%")
+print(f"Valid data:        {100 * valid_fraction:.1f}%")
 print(f"Median S/N:        {median_snr_all:.1f}")
 print("=" * 50)
 ```
