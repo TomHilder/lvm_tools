@@ -318,5 +318,5 @@ print(config)
 
 ## Next Steps
 
-- [fitting_workflow](tutorials/fitting_workflow.md): Apply configurations in a fitting pipeline
-- [config](tutorials/../api/config.md): Complete API reference
+- [Tutorial: Model Fitting Workflow](fitting_workflow.md): Apply configurations in a fitting pipeline
+- [Configuration API](../api/config.md): Complete API reference

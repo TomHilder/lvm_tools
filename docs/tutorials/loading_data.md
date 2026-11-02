@@ -242,5 +242,5 @@ except FileNotFoundError:
 
 ## Next Steps
 
-- [data_configuration](tutorials/data_configuration.md): Learn to configure data processing
-- [fitting_workflow](tutorials/fitting_workflow.md): Complete model fitting workflow
+- [Tutorial: Data Configuration](data_configuration.md): Learn to configure data processing
+- [Tutorial: Model Fitting Workflow](fitting_workflow.md): Complete model fitting workflow

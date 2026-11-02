@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-This guide provides a rapid introduction to the core functionality of **lvm_tools**. For more detailed explanations, see the [concepts](user_guide/concepts.md) page and the [loading_data](user_guide/../tutorials/loading_data.md) tutorial.
+This guide provides a rapid introduction to the core functionality of **lvm_tools**. For more detailed explanations, see the [Core Concepts](concepts.md) page and the [Tutorial: Loading LVM Data](../tutorials/loading_data.md) tutorial.
 
 ## Loading Data
 
@@ -115,7 +115,7 @@ print(f"Wavelength range: {fit_data.λ.min():.1f} - {fit_data.λ.max():.1f} Å")
 
 ## Next Steps
 
-- [concepts](user_guide/concepts.md): Understand the design philosophy and data structures
-- [loading_data](user_guide/../tutorials/loading_data.md): Detailed tutorial on data loading
-- [data_configuration](user_guide/../tutorials/data_configuration.md): Advanced configuration options
-- [overview](user_guide/../api/overview.md): Complete API reference
+- [Core Concepts](concepts.md): Understand the design philosophy and data structures
+- [Tutorial: Loading LVM Data](../tutorials/loading_data.md): Detailed tutorial on data loading
+- [Tutorial: Data Configuration](../tutorials/data_configuration.md): Advanced configuration options
+- [API Overview](../api/overview.md): Complete API reference

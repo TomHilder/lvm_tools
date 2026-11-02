@@ -291,5 +291,5 @@ with open("analysis_metadata.json", "w") as f:
 
 ## Next Steps
 
-- [fit_data](tutorials/../api/fit_data.md): Complete FitData API reference
-- [processing](tutorials/../api/processing.md): Processing utilities
+- [Fit Data API](../api/fit_data.md): Complete FitData API reference
+- [Processing API](../api/processing.md): Processing utilities

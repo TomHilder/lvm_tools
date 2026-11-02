@@ -4,7 +4,7 @@ This tutorial demonstrates how to explore and visualise LVM data, including spat
 
 ## Prerequisites
 
-This tutorial assumes you have completed [loading_data](tutorials/loading_data.md) and have access to LVM DRP files. We will use matplotlib for visualisation:
+This tutorial assumes you have completed [Tutorial: Loading LVM Data](loading_data.md) and have access to LVM DRP files. We will use matplotlib for visualisation:
 
 ``` bash
 pip install matplotlib
@@ -400,5 +400,5 @@ print("=" * 50)
 
 ## Next Steps
 
-- [data_configuration](tutorials/data_configuration.md): Learn to configure data processing
-- [fitting_workflow](tutorials/fitting_workflow.md): Apply configurations in a fitting pipeline
+- [Tutorial: Data Configuration](data_configuration.md): Learn to configure data processing
+- [Tutorial: Model Fitting Workflow](fitting_workflow.md): Apply configurations in a fitting pipeline
