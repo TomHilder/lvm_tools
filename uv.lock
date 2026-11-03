@@ -907,7 +907,7 @@ requires-dist = [
     { name = "jax", specifier = ">=0.4.31" },
     { name = "numpy", specifier = ">=2.0.0" },
     { name = "scipy", specifier = ">=1.11.0" },
-    { name = "spectracles", marker = "python_full_version >= '3.11' and extra == 'spectracles'", specifier = ">=0.5.1" },
+    { name = "spectracles", marker = "python_full_version >= '3.11' and extra == 'spectracles'", specifier = ">=1.0" },
     { name = "xarray", specifier = ">=2024.1.0" },
 ]
 provides-extras = ["spectracles"]
@@ -2297,7 +2297,7 @@ wheels = [
 
 [[package]]
 name = "spectracles"
-version = "0.7.0"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dill" },
@@ -2312,9 +2312,9 @@ dependencies = [
     { name = "rich" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/9a/849943d46b062c5b40bc1c065384d9ed8933abe0d32cc603936c18d864ab/spectracles-0.7.0.tar.gz", hash = "sha256:cacf0bf70b73bcff413c690ad0b20ca2c4fa143b5001d49eb8276252eae9ba50", size = 52265, upload-time = "2026-10-26T20:43:40.821Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/c5/ec46eb697e9d3f582d5f249cc07c622bae73102697e77f77c3d70fa54446/spectracles-1.0.0.tar.gz", hash = "sha256:4c60115c57925a1637b8e2fa6a23819cba994f5b0f9c24dc02ac218d0eafd0e6", size = 89826, upload-time = "2026-11-03T18:31:34.027Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a5/aa/fcf4ff324cc9e892337300419b3ccab846934ffa98fbf9c7cb6388529cc7/spectracles-0.7.0-py3-none-any.whl", hash = "sha256:d884ca81020be6a460be1ba52a537518626547272617cd0077c8ff429ea49a61", size = 65248, upload-time = "2026-10-26T20:43:39.378Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/a8/5c875da73527d57690ee74575c9938482bede9488feca259ca2d031b77af/spectracles-1.0.0-py3-none-any.whl", hash = "sha256:276023bc2b586a85d252ff5ef720722250addf86a7b233848fdd18dbf08f07d7", size = 108380, upload-time = "2026-11-03T18:31:32.409Z" },
 ]
 
 [[package]]
