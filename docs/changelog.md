@@ -4,7 +4,7 @@ All notable changes to **lvm_tools** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.2.0] - 2026-11-03
 
 ### Added
 
@@ -28,6 +28,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 
 ### Changed
 
+- The `spectracles` extra now requires spectracles 1.0 or later, which has the `Domain` that arcsec positions (`sky_data`) need for physical length scales.
 - The documentation is now built with MkDocs Material (as spectracles' is), from Markdown in `docs/`. The content is unchanged.
 
 ## [0.1.3] - 2026-10-28
