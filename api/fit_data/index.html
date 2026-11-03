@@ -1,0 +1,3681 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Lazy reading and preparation of SDSS-V LVM data for model fitting">
+      
+      
+      
+      
+        <link rel="prev" href="../config/">
+      
+      
+        <link rel="next" href="../processing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Fit Data API - lvm_tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fit-data-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="lvm_tools" class="md-header__button md-logo" aria-label="lvm_tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            lvm_tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fit Data API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TomHilder/lvm_tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TomHilder/lvm_tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="lvm_tools" class="md-nav__button md-logo" aria-label="lvm_tools" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    lvm_tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TomHilder/lvm_tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TomHilder/lvm_tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user_guide/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user_guide/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user_guide/concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/loading_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial: Loading LVM Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/exploring_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial: Exploring LVM Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/data_configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial: Data Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/fitting_workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial: Model Fitting Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Loading API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fit Data API
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fit Data API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fitdatabuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitDataBuilder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.FitDataBuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitDataBuilder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FitDataBuilder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.FitDataBuilder.build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.FitDataBuilder.hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fitdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitData
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitData
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FitData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sky-positions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sky positions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sky positions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_x
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_y
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_centre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_centre
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_to_radec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_to_radec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.with_sky_origin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_sky_origin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spectral-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spectral data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spectral data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.flux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        flux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.i_var" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        i_var
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.u_flux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        u_flux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.mask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.λ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        λ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.lsf_σ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lsf_σ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indices-and-per-spaxel-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices and per-spaxel properties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Indices and per-spaxel properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.λ_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        λ_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.spaxel_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spaxel_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.tile_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tile_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.ifu_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ifu_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.fibre_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fibre_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.mjd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mjd
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.v_bary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v_bary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deprecated-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecated coordinates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deprecated coordinates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.α" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        α
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.δ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        δ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.αδ_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        αδ_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.predict_α" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict_α
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.predict_δ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict_δ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.arcsec_to_model_domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        arcsec_to_model_domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helper-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helper functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.to_jax_array" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_jax_array
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.to_π_domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_π_domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.from_π_domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from_π_domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processing API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fitdatabuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitDataBuilder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.FitDataBuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitDataBuilder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FitDataBuilder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.FitDataBuilder.build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.FitDataBuilder.hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fitdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitData
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FitData
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FitData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sky-positions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sky positions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sky positions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_x
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_y
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_centre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_centre
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_to_radec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_to_radec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.with_sky_origin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_sky_origin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.sky_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sky_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spectral-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spectral data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spectral data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.flux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        flux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.i_var" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        i_var
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.u_flux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        u_flux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.mask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.λ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        λ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.lsf_σ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lsf_σ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indices-and-per-spaxel-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices and per-spaxel properties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Indices and per-spaxel properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.λ_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        λ_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.spaxel_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spaxel_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.tile_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tile_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.ifu_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ifu_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.fibre_idx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fibre_idx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.mjd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mjd
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.v_bary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v_bary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deprecated-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecated coordinates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deprecated coordinates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.α" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        α
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.δ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        δ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.αδ_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        αδ_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.predict_α" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict_α
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.predict_δ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict_δ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.FitData.arcsec_to_model_domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        arcsec_to_model_domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helper-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helper functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.to_jax_array" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_jax_array
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.to_π_domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_π_domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lvm_tools.fit_data.fit_data.from_π_domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from_π_domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="fit-data-api">Fit Data API<a class="headerlink" href="#fit-data-api" title="Permanent link">&para;</a></h1>
+<p><code>FitDataBuilder</code> turns tiles and a <code>DataConfig</code> into <code>FitData</code>: normalised, model-ready JAX
+arrays with sky positions and indices. <code>FitDataBuilder</code> is exported from the top-level
+<code>lvm_tools</code> namespace; <code>FitData</code> lives in <code>lvm_tools.fit_data.fit_data</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataConfig</span><span class="p">,</span> <span class="n">FitDataBuilder</span><span class="p">,</span> <span class="n">LVMTile</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">tile</span> <span class="o">=</span> <span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">"/data/observation.fits"</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">tile</span><span class="p">,</span> <span class="n">λ_range</span><span class="o">=</span><span class="p">(</span><span class="mf">6500.0</span><span class="p">,</span> <span class="mf">6800.0</span><span class="p">))</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">fit_data</span> <span class="o">=</span> <span class="n">FitDataBuilder</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="n">tile</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Spectra have shape (n_wavelengths, n_spaxels); average over the spaxels with data</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">weights</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">mean_flux</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># Spaxel positions in arcsec east and north of fit_data.sky_centre, and back to RA, Dec</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">sky_x</span><span class="p">,</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">sky_y</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">sky_to_radec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean barycentric velocity: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">fit_data</span><span class="o">.</span><span class="n">v_bary</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km/s"</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="fitdatabuilder">FitDataBuilder<a class="headerlink" href="#fitdatabuilder" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="lvm_tools.FitDataBuilder" class="doc doc-heading">
+            <code>lvm_tools.FitDataBuilder</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#lvm_tools.FitDataBuilder" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Builds <code>FitData</code> from tiles and a config, and identifies the pair by a hash.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.FitDataBuilder.tiles">tiles</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="lvm_tools.data.tile.LVMTileLike = LVMTile | LVMTileCollection
+
+  
+      module-attribute
+   (lvm_tools.data.tile.LVMTileLike)" href="../tile/#lvm_tools.data.tile.LVMTileLike">LVMTileLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The data: one tile or a collection.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.FitDataBuilder.config">config</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="lvm_tools.DataConfig
+
+
+  
+      dataclass
+   (lvm_tools.config.data_config.DataConfig)" href="../config/#lvm_tools.DataConfig">DataConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The processing config, usually from <code>DataConfig.from_tiles</code> on the same
+tiles.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="lvm_tools.FitDataBuilder--__codelineno-0-1" name="lvm_tools.FitDataBuilder--__codelineno-0-1" href="#lvm_tools.FitDataBuilder--__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lvm_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataConfig</span><span class="p">,</span> <span class="n">FitDataBuilder</span><span class="p">,</span> <span class="n">LVMTile</span>
+<a id="lvm_tools.FitDataBuilder--__codelineno-0-2" name="lvm_tools.FitDataBuilder--__codelineno-0-2" href="#lvm_tools.FitDataBuilder--__codelineno-0-2"></a>
+<a id="lvm_tools.FitDataBuilder--__codelineno-0-3" name="lvm_tools.FitDataBuilder--__codelineno-0-3" href="#lvm_tools.FitDataBuilder--__codelineno-0-3"></a><span class="n">tile</span> <span class="o">=</span> <span class="n">LVMTile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a id="lvm_tools.FitDataBuilder--__codelineno-0-4" name="lvm_tools.FitDataBuilder--__codelineno-0-4" href="#lvm_tools.FitDataBuilder--__codelineno-0-4"></a><span class="n">config</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">from_tiles</span><span class="p">(</span><span class="n">tile</span><span class="p">,</span> <span class="n">λ_range</span><span class="o">=</span><span class="p">(</span><span class="mf">6500.0</span><span class="p">,</span> <span class="mf">6800.0</span><span class="p">))</span>
+<a id="lvm_tools.FitDataBuilder--__codelineno-0-5" name="lvm_tools.FitDataBuilder--__codelineno-0-5" href="#lvm_tools.FitDataBuilder--__codelineno-0-5"></a>
+<a id="lvm_tools.FitDataBuilder--__codelineno-0-6" name="lvm_tools.FitDataBuilder--__codelineno-0-6" href="#lvm_tools.FitDataBuilder--__codelineno-0-6"></a><span class="n">builder</span> <span class="o">=</span> <span class="n">FitDataBuilder</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="n">tile</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<a id="lvm_tools.FitDataBuilder--__codelineno-0-7" name="lvm_tools.FitDataBuilder--__codelineno-0-7" href="#lvm_tools.FitDataBuilder--__codelineno-0-7"></a><span class="n">fit_data</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+</code></pre></div>
+</details>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lvm_tools.FitDataBuilder.build" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build</span><span class="p">()</span></code>
+
+<a href="#lvm_tools.FitDataBuilder.build" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Process the tiles with the config and package the result for fitting.</p>
+<p>The steps are:</p>
+<ol>
+<li>Clip the data to the config's wavelength, RA and Dec ranges.</li>
+<li>Set the data the config excludes to NaN (NaNs, bad flux, fibre status, mask).</li>
+<li>Flatten the tile and spaxel dimensions into one spaxel dimension.</li>
+<li>Make the normalisation functions from the config's offsets and scales (the
+   normalisation strategies are not applied again here).</li>
+</ol>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="lvm_tools.fit_data.fit_data.FitData
+
+
+  
+      dataclass
+  " href="#lvm_tools.fit_data.fit_data.FitData">FitData</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The data, ready for fitting.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If no data are left after clipping or filtering, or a strategy is
+not supported by the filtering.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lvm_tools.FitDataBuilder.hash" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">hash</span><span class="p">()</span></code>
+
+<a href="#lvm_tools.FitDataBuilder.hash" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A SHA-256 hash identifying the config and the tiles.</p>
+<p>It is computed from the config's attributes and each tile's metadata (filename,
+tile ID, exposure number and DRP version), both serialised as JSON with sorted
+keys. It identifies the inputs, not the data values.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The hash, as a hexadecimal string.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="lvm_tools.FitDataBuilder.hash--__codelineno-0-1" name="lvm_tools.FitDataBuilder.hash--__codelineno-0-1" href="#lvm_tools.FitDataBuilder.hash--__codelineno-0-1"></a><span class="n">pipeline_hash</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">hash</span><span class="p">()</span>
+<a id="lvm_tools.FitDataBuilder.hash--__codelineno-0-2" name="lvm_tools.FitDataBuilder.hash--__codelineno-0-2" href="#lvm_tools.FitDataBuilder.hash--__codelineno-0-2"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Pipeline: </span><span class="si">{</span><span class="n">pipeline_hash</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="fitdata">FitData<a class="headerlink" href="#fitdata" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="lvm_tools.fit_data.fit_data.FitData" class="doc doc-heading">
+            <code>lvm_tools.fit_data.fit_data.FitData</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>LVM data ready for model fitting: normalised arrays, positions and indices as JAX arrays.</p>
+<p>Usually made by <code>FitDataBuilder.build</code>. The data are held as a flattened xarray dataset
+plus the normalisation functions, and each property computes its JAX array from them
+when accessed.</p>
+<p>The spectral arrays (<code>flux</code>, <code>i_var</code>, <code>u_flux</code>, <code>lsf_σ</code>, <code>mask</code>) have shape
+<code>(n_wavelengths, n_spaxels)</code>, and the per-spaxel arrays (<code>sky_x</code>, <code>sky_y</code>, the indices,
+<code>mjd</code>, <code>v_bary</code>) have shape <code>(n_spaxels,)</code>, where the spaxels of every tile are counted
+together. Floating-point arrays are 32-bit unless JAX's 64-bit mode is on. Pixels that
+were clipped or filtered out are NaN in the processed data; <code>mask</code> marks the others,
+and the spectral properties replace the NaNs with fill values so they can be used in
+a likelihood together with <code>mask</code>.</p>
+<p>Sky positions are given as <code>sky_x</code> and <code>sky_y</code>: offsets in arcsec east and north of
+<code>sky_centre</code>, on the tangent plane. <code>sky_data</code> packages them for spectracles. The
+members that scale the coordinates into [-π, π] (<code>α</code>, <code>δ</code>, <code>αδ_data</code>, <code>predict_α</code>,
+<code>predict_δ</code>, <code>arcsec_to_model_domain</code>) are deprecated and emit <code>DeprecationWarning</code>.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.processed_data">processed_data</span></code></td>
+            <td>
+                  <code><span title="xarray.Dataset">Dataset</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The clipped, filtered data, flattened to dimensions
+<code>(wavelength, flat_spaxel)</code> (see <code>flatten_tile_coord</code>).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.normalise_flux">normalise_flux</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Normalises a flux, <code>(flux - offset) / scale</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.predict_flux">predict_flux</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Turns a normalised flux back into erg cm⁻² s⁻¹ Å⁻¹.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.normalise_ivar">normalise_ivar</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Normalises an inverse variance (multiplies it by the flux scale
+squared).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.predict_ivar">predict_ivar</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Turns a normalised inverse variance back into physical units.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.normalise_α">normalise_α</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Normalises a right ascension in degrees.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.normalise_δ">normalise_δ</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Normalises a declination in degrees.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="lvm_tools.fit_data.fit_data.FitData.sky_origin">sky_origin</span></code></td>
+            <td>
+                  <code><span title="tuple">tuple</span>[<span title="float">float</span>, <span title="float">float</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The (RA, Dec) in degrees to measure sky offsets from, or <code>None</code> (the
+default) for the centre of the spaxels' bounding box. Set it with
+<code>with_sky_origin</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+        <p>The fields are, in order: <code>processed_data</code>, <code>normalise_flux</code>, <code>predict_flux</code>,
+<code>normalise_ivar</code>, <code>predict_ivar</code>, <code>normalise_α</code>, the inverse of <code>normalise_α</code>,
+<code>normalise_δ</code>, the inverse of <code>normalise_δ</code>, and <code>sky_origin</code>.</p>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="lvm_tools.fit_data.fit_data.FitData--__codelineno-0-1" name="lvm_tools.fit_data.fit_data.FitData--__codelineno-0-1" href="#lvm_tools.fit_data.fit_data.FitData--__codelineno-0-1"></a><span class="n">fit_data</span> <span class="o">=</span> <span class="n">FitDataBuilder</span><span class="p">(</span><span class="n">tiles</span><span class="o">=</span><span class="n">tile</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<a id="lvm_tools.fit_data.fit_data.FitData--__codelineno-0-2" name="lvm_tools.fit_data.fit_data.FitData--__codelineno-0-2" href="#lvm_tools.fit_data.fit_data.FitData--__codelineno-0-2"></a><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">sky_x</span><span class="p">,</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">sky_y</span>  <span class="c1"># arcsec</span>
+<a id="lvm_tools.fit_data.fit_data.FitData--__codelineno-0-3" name="lvm_tools.fit_data.fit_data.FitData--__codelineno-0-3" href="#lvm_tools.fit_data.fit_data.FitData--__codelineno-0-3"></a><span class="n">flux</span><span class="p">,</span> <span class="n">i_var</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">i_var</span><span class="p">,</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">mask</span>
+</code></pre></div>
+</details>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="sky-positions">Sky positions<a class="headerlink" href="#sky-positions" title="Permanent link">&para;</a></h3>
+<p>Positions are offsets in arcsec on the tangent plane at <code>sky_centre</code>.</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.sky_x" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sky_x</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.sky_x" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Each spaxel's offset east of <code>sky_centre</code>, in arcsec, shape <code>(n_spaxels,)</code>.</p>
+<p>The offsets are coordinates on the tangent plane at <code>sky_centre</code> (astropy's
+<code>SkyOffsetFrame</code>), so they include the cos(Dec) factor. They are computed in
+64-bit precision before being converted to a JAX array.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.sky_y" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sky_y</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.sky_y" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Each spaxel's offset north of <code>sky_centre</code>, in arcsec, shape <code>(n_spaxels,)</code>.</p>
+<p>Computed as for <code>sky_x</code>, on the tangent plane at <code>sky_centre</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.sky_centre" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sky_centre</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.sky_centre" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The (RA, Dec) in degrees that <code>sky_x</code> and <code>sky_y</code> are measured from.</p>
+<p>This is <code>sky_origin</code> if set, otherwise the centre of the spaxels' bounding box in RA
+and Dec. The bounding box is found with RA measured relative to the first spaxel, so
+a footprint that crosses RA = 0 is handled.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.sky_to_radec" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sky_to_radec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.sky_to_radec" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Convert offsets from <code>sky_centre</code> in arcsec to (RA, Dec) in degrees.</p>
+<p>The inverse of <code>sky_x</code> and <code>sky_y</code>, e.g. to plot a map made on a grid of <code>sky_x</code>,
+<code>sky_y</code> in RA and Dec.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>x</code>
+            </td>
+            <td>
+                  <code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Offsets east of <code>sky_centre</code>, in arcsec.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>y</code>
+            </td>
+            <td>
+                  <code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Offsets north of <code>sky_centre</code>, in arcsec (same shape as <code>x</code>).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="tuple">tuple</span>[<span title="numpy.ndarray">ndarray</span>, <span title="numpy.ndarray">ndarray</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The right ascensions and declinations, in degrees (ICRS).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.with_sky_origin" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">with_sky_origin</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.with_sky_origin" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The same data, with sky offsets measured from (RA, Dec) in degrees.</p>
+<p>Use it e.g. to put several datasets on one frame. The origin is a choice of frame,
+not part of the data, so <code>FitDataBuilder.hash</code> doesn't include it.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>ra</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Right ascension of the origin, in degrees.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>dec</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Declination of the origin, in degrees.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="lvm_tools.fit_data.fit_data.FitData
+
+
+  
+      dataclass
+  " href="#lvm_tools.fit_data.fit_data.FitData">FitData</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A copy with <code>sky_origin = (ra, dec)</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.sky_data" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sky_data</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.sky_data" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The spaxel positions for spectracles, as arcsec offsets from <code>sky_centre</code>.</p>
+<p>A spectracles <code>SpatialDataLVM</code> with <code>x = sky_x</code>, <code>y = sky_y</code>, and the spaxel, tile,
+IFU and fibre indices (<code>spaxel_idx</code>, <code>tile_idx</code>, <code>ifu_idx</code>, <code>fibre_idx</code>). Length
+scales of spectracles fields are then in arcsec. Build the field's region with
+<code>spectracles.Domain.from_points(d.x, d.y)</code>. Requires the optional <code>spectracles</code>
+dependency (<code>pip install lvm_tools[spectracles]</code>).</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ModuleNotFoundError">ModuleNotFoundError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If spectracles could not be imported.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-1" name="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-1" href="#lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">spectracles</span><span class="w"> </span><span class="kn">import</span> <span class="n">Domain</span>
+<a id="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-2" name="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-2" href="#lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-2"></a>
+<a id="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-3" name="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-3" href="#lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-3"></a><span class="n">spaxels</span> <span class="o">=</span> <span class="n">fit_data</span><span class="o">.</span><span class="n">sky_data</span>
+<a id="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-4" name="lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-4" href="#lvm_tools.fit_data.fit_data.FitData.sky_data--__codelineno-0-4"></a><span class="n">domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="o">.</span><span class="n">from_points</span><span class="p">(</span><span class="n">spaxels</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">spaxels</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+</details>
+    </div>
+
+</div><h3 id="spectral-data">Spectral data<a class="headerlink" href="#spectral-data" title="Permanent link">&para;</a></h3>
+<p>Arrays of shape <code>(n_wavelengths, n_spaxels)</code>, plus the wavelength grid.</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.flux" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">flux</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.flux" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Normalised flux, shape <code>(n_wavelengths, n_spaxels)</code>, with NaNs (excluded pixels)
+set to 0.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.i_var" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">i_var</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.i_var" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Normalised inverse variance of <code>flux</code>, shape <code>(n_wavelengths, n_spaxels)</code>, with
+NaNs set to 1e-4.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.u_flux" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">u_flux</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.u_flux" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Normalised flux uncertainty, <code>i_var**-0.5</code> (before its NaNs are filled), shape
+<code>(n_wavelengths, n_spaxels)</code>, with NaNs set to 100.</p>
+<p>Infinite values (where the inverse variance is 0) become the largest finite float,
+as in <code>jax.numpy.nan_to_num</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.mask" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mask</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.mask" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Which pixels hold data, shape <code>(n_wavelengths, n_spaxels)</code>: <code>True</code> where the flux
+is not NaN, i.e. the pixel survived clipping and filtering.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.λ" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">λ</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.λ" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Wavelengths in Angstrom, shape <code>(n_wavelengths,)</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.lsf_σ" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">lsf_σ</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.lsf_σ" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Gaussian standard deviation of the line spread function in Angstrom (not
+normalised), shape <code>(n_wavelengths, n_spaxels)</code>, with NaNs set to the median of the
+rest.</p>
+
+    </div>
+
+</div><h3 id="indices-and-per-spaxel-properties">Indices and per-spaxel properties<a class="headerlink" href="#indices-and-per-spaxel-properties" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.λ_idx" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">λ_idx</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.λ_idx" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Wavelength indices <code>0 .. n_wavelengths - 1</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.spaxel_idx" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">spaxel_idx</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.spaxel_idx" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Spaxel indices <code>0 .. n_spaxels - 1</code>, counting the spaxels of every tile together.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.tile_idx" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tile_idx</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.tile_idx" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Index of each spaxel's tile, shape <code>(n_spaxels,)</code>: the tiles' exposure numbers
+replaced by <code>0 .. n_tiles - 1</code>, in increasing order of exposure number.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.ifu_idx" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ifu_idx</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.ifu_idx" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Index of each spaxel's IFU bundle, shape <code>(n_spaxels,)</code>: the IFU labels replaced
+by <code>0 .. n_ifus - 1</code>, in sorted order of label.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.fibre_idx" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">fibre_idx</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.fibre_idx" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Fibre identifier of each spaxel, shape <code>(n_spaxels,)</code>. These are the slitmap's
+fibre IDs, not re-indexed, so gaps from excluded fibres are kept.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.mjd" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mjd</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.mjd" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Modified Julian Date of the midpoint of each spaxel's exposure, shape
+<code>(n_spaxels,)</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.v_bary" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">v_bary</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.v_bary" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Barycentric velocity correction of each spaxel in km/s, shape <code>(n_spaxels,)</code>.</p>
+<p>Computed by <code>get_v_barycentric</code> for Las Campanas Observatory, at each spaxel's
+position and exposure midpoint.</p>
+
+    </div>
+
+</div><h3 id="deprecated-coordinates">Deprecated coordinates<a class="headerlink" href="#deprecated-coordinates" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Deprecated</p>
+<p>These members scale RA and Dec into [-π, π] and emit <code>DeprecationWarning</code>. Use the
+arcsec offsets instead: <code>sky_x</code> for <code>α</code>, <code>sky_y</code> for <code>δ</code>, <code>sky_data</code> for <code>αδ_data</code>,
+and <code>sky_to_radec</code> for <code>predict_α</code> and <code>predict_δ</code>. Positions from <code>sky_data</code> are
+already in arcsec, so <code>arcsec_to_model_domain</code> isn't needed.</p>
+</div>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.α" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">α</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.α" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Deprecated: use <code>sky_x</code> (arcsec).</p>
+<p>Right ascension of each spaxel, normalised with <code>normalise_α</code> and mapped onto
+[-π, π] (see <code>to_π_domain</code>), shape <code>(n_spaxels,)</code>. Emits <code>DeprecationWarning</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.δ" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">δ</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.δ" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Deprecated: use <code>sky_y</code> (arcsec).</p>
+<p>Declination of each spaxel, normalised with <code>normalise_δ</code> and mapped onto [-π, π]
+(see <code>to_π_domain</code>), shape <code>(n_spaxels,)</code>. Emits <code>DeprecationWarning</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.αδ_data" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">αδ_data</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.αδ_data" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Deprecated: use <code>sky_data</code> (arcsec).</p>
+<p>The spaxel positions for spectracles as in <code>sky_data</code>, but with the coordinates of
+<code>α</code> and <code>δ</code> (in [-π, π]) instead of arcsec offsets. Emits <code>DeprecationWarning</code>.</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ModuleNotFoundError">ModuleNotFoundError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If spectracles could not be imported.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.predict_α" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">predict_α</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.predict_α" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Deprecated: use <code>sky_to_radec</code>.</p>
+<p>Convert right ascensions in the [-π, π] coordinates of <code>α</code> back to degrees. Emits
+<code>DeprecationWarning</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>x</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values in the coordinates of <code>α</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The right ascensions in degrees.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.predict_δ" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">predict_δ</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.predict_δ" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Deprecated: use <code>sky_to_radec</code>.</p>
+<p>Convert declinations in the [-π, π] coordinates of <code>δ</code> back to degrees. Emits
+<code>DeprecationWarning</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>x</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values in the coordinates of <code>δ</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The declinations in degrees.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="lvm_tools.fit_data.fit_data.FitData.arcsec_to_model_domain" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">arcsec_to_model_domain</span><span class="p">(</span><span class="n">arcsec</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.FitData.arcsec_to_model_domain" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Deprecated: with <code>sky_data</code>, positions are already in arcsec.</p>
+<p>Convert a length in arcsec into the [-π, π] coordinates of <code>α</code>, treating it as a
+length in degrees of right ascension (without a cos(Dec) factor). Emits
+<code>DeprecationWarning</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>arcsec</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The length, in arcsec.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The length in the coordinates of <code>α</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div><h2 id="helper-functions">Helper functions<a class="headerlink" href="#helper-functions" title="Permanent link">&para;</a></h2>
+<p>These are in <code>lvm_tools.fit_data.fit_data</code>; the [-π, π] mappings are used only by the
+deprecated coordinates.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lvm_tools.fit_data.fit_data.to_jax_array" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">lvm_tools</span><span class="o">.</span><span class="n">fit_data</span><span class="o">.</span><span class="n">fit_data</span><span class="o">.</span><span class="n">to_jax_array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.to_jax_array" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Convert an array (e.g. an xarray <code>DataArray</code> or its values) to a JAX array.</p>
+<p>JAX's warning that a 64-bit dtype was truncated (when JAX's 64-bit mode is off) is
+silenced, so the result is 32-bit unless that mode is on.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>arr</code>
+            </td>
+            <td>
+                  <code><span title="xarray.DataArray">DataArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The array.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>dtype</code>
+            </td>
+            <td>
+                  <code><span title="numpy.dtype">dtype</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The dtype to request.</p>
+              </div>
+            </td>
+            <td>
+                  <code><span title="numpy.float64">float64</span></code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The JAX array.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lvm_tools.fit_data.fit_data.to_π_domain" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">lvm_tools</span><span class="o">.</span><span class="n">fit_data</span><span class="o">.</span><span class="n">fit_data</span><span class="o">.</span><span class="n">to_π_domain</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.to_π_domain" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Map values from [0, 1] onto [-π, π]: <code>x * 2π - π</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>x</code>
+            </td>
+            <td>
+                  <code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values in [0, 1].</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The values in [-π, π].</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lvm_tools.fit_data.fit_data.from_π_domain" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">lvm_tools</span><span class="o">.</span><span class="n">fit_data</span><span class="o">.</span><span class="n">fit_data</span><span class="o">.</span><span class="n">from_π_domain</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+<a href="#lvm_tools.fit_data.fit_data.from_π_domain" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Map values from [-π, π] back onto [0, 1]: <code>(x + π) / 2π</code>. The inverse of <code>to_π_domain</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>x</code>
+            </td>
+            <td>
+                  <code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values in [-π, π].</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The values in [0, 1].</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.sections", "navigation.expand", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
