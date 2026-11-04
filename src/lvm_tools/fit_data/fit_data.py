@@ -14,6 +14,7 @@ from astropy.coordinates import SkyCoord, SkyOffsetFrame
 from jax.numpy import pi as π
 from xarray import DataArray, Dataset
 
+from lvm_tools.lsf import LSFMixture, SurveyLSF
 from lvm_tools.physical_properties.barycentric_corr import get_v_barycentric
 
 if TYPE_CHECKING:
@@ -392,6 +393,65 @@ class FitData:
         rest."""
         median_lsf_σ = jnp.nanmedian(self._lsf_σ)
         return jnp.nan_to_num(self._lsf_σ, nan=median_lsf_σ)
+
+    def lsf_mixture(
+        self,
+        wavelengths: ArrayLike,
+        n_components: int = 3,
+        lsf: SurveyLSF | None = None,
+        window: float = 3.0,
+    ) -> LSFMixture:
+        """The LSF at given wavelengths for every spaxel, as a sum of Gaussians.
+
+        The shape of each spaxel's LSF comes from the per-fibre survey LSF (`SurveyLSF`),
+        looked up by the spaxel's fibre ID; its width is the DRP's LSF width for that spaxel
+        (the median of `lsf_sigma` over pixels within `window` Angstrom of the wavelength). So
+        the width follows each exposure's calibration while the shape is the fibre's own. Each
+        mixture has mean zero and a standard deviation equal to that width. Spaxels whose fibre
+        has no measured LSF get a single Gaussian of that width (`measured` is `False`).
+
+        Args:
+            wavelengths: The wavelengths in Angstrom, e.g. of the emission lines being fitted,
+                shape `(n_lines,)`. The LSF changes slowly with wavelength, so rest wavelengths
+                are fine for nearby objects.
+            n_components: Number of Gaussians per mixture (see `SurveyLSF.mixture`).
+            lsf: The survey LSF. Defaults to `SurveyLSF.load()`, which downloads the tables on
+                first use.
+            window: Half-width in Angstrom of the wavelength range the DRP width is taken over.
+
+        Returns:
+            The mixtures, with arrays of shape `(n_spaxels, n_lines, n_components)` and
+            `measured` of shape `(n_spaxels, n_lines)` (NumPy arrays).
+
+        Example:
+            ```python
+            mix = fit_data.lsf_mixture([6548.05, 6562.80, 6583.45])
+            # A line of intrinsic width σ is then a sum of Gaussians of widths
+            # √(mix.widths² + σ²), at offsets mix.offsets, weighted by mix.weights.
+            ```
+        """
+        lsf = SurveyLSF.load() if lsf is None else lsf
+        lines = np.atleast_1d(np.asarray(wavelengths, dtype=float))
+        fibre_id = np.asarray(self.processed_data["fibre_id"].values, dtype=int)
+        wave = np.asarray(self.processed_data["wavelength"].values)
+        drp_sigma = np.asarray(self.processed_data["lsf_sigma"].values)  # (n_wave, n_spaxels)
+        fallback = np.nanmedian(drp_sigma)
+        parts = []
+        for line in lines:
+            near = np.abs(wave - line) <= window
+            if not near.any():
+                near = np.abs(wave - line) == np.abs(wave - line).min()
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", RuntimeWarning)  # spaxels with no data near
+                sigma = np.nanmedian(drp_sigma[near], axis=0)
+            sigma = np.where(np.isfinite(sigma), sigma, fallback)
+            parts.append(lsf.mixture(fibre_id, float(line), n_components, sigma=sigma))
+        return LSFMixture(
+            weights=np.stack([p.weights for p in parts], axis=1),
+            offsets=np.stack([p.offsets for p in parts], axis=1),
+            widths=np.stack([p.widths for p in parts], axis=1),
+            measured=np.stack([p.measured for p in parts], axis=1),
+        )
 
     @property
     def mjd(self) -> JaxArray:

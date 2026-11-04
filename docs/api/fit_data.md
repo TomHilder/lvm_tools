@@ -101,6 +101,11 @@ Arrays of shape `(n_wavelengths, n_spaxels)`, plus the wavelength grid.
       heading_level: 4
       show_root_full_path: false
 
+::: lvm_tools.fit_data.fit_data.FitData.lsf_mixture
+    options:
+      heading_level: 4
+      show_root_full_path: false
+
 ### Indices and per-spaxel properties
 
 ::: lvm_tools.fit_data.fit_data.FitData.λ_idx

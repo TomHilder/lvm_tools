@@ -4,6 +4,13 @@ All notable changes to **lvm_tools** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- The per-fibre, non-parametric line spread function measured by lvmsky (`lvm_tools.lsf`): `SurveyLSF` evaluates each fibre's LSF and its moments at any wavelength, and `SurveyLSF.mixture` approximates it by a few Gaussians with free offsets (needed for its flat top), so a model can convolve it with a Gaussian line and integrate over pixels analytically. The tables are downloaded from a fixed lvmsky commit on first use, checked against lvmsky's SHA-256 sums, and cached (`fetch_survey_lsf`).
+- `FitData.lsf_mixture(wavelengths)`: every spaxel's LSF at the given wavelengths as Gaussian mixtures, with the shape from the survey LSF of the spaxel's fibre and the width from the DRP's `LSF` extension.
+
 ## [0.2.0] - 2026-11-03
 
 ### Added

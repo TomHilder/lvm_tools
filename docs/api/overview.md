@@ -16,6 +16,7 @@ lvm_tools/
 │   ├── tile.py          # LVMTile, LVMTileCollection
 │   ├── coordinates.py   # Time/location utilities
 │   └── helper.py        # Array conversion helpers
+├── lsf.py               # SurveyLSF, LSFMixture
 ├── fit_data/            # Data processing
 │   ├── fit_data.py      # FitData class
 │   ├── builder.py       # FitDataBuilder class
@@ -48,6 +49,8 @@ from lvm_tools import (
   constants.
 - [Configuration](config.md): `DataConfig`, its type aliases and validation.
 - [Fit Data](fit_data.md): `FitDataBuilder` and `FitData`.
+- [Line Spread Function](lsf.md): the per-fibre survey LSF (`SurveyLSF`) and its
+  Gaussian-mixture approximation (`LSFMixture`, `FitData.lsf_mixture`).
 - [Processing](processing.md): clipping, filtering and normalisation functions.
 - [Utilities](utils.md): barycentric corrections, spatial masking and helpers.
 

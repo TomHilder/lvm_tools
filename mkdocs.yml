@@ -53,6 +53,7 @@ nav:
     - api/tile.md
     - api/config.md
     - api/fit_data.md
+    - api/lsf.md
     - api/processing.md
     - api/utils.md
   - Development:
